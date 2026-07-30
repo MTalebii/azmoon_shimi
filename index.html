@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<!--
+  Chemistry Grade 12 - Final Exam Review
+  Required Notice: Copyright 2026 @forkcode (https://t.me/forkcode)
+  Educational collaboration: @rebwar_edu (https://t.me/rebwar_edu)
+  Licensed under the PolyForm Noncommercial License 1.0.0
+  https://polyformproject.org/licenses/noncommercial/1.0.0
+-->
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#FBF8F4">
+<meta name="color-scheme" content="light">
+<title>شیمی دوازدهم — آزمون جمع‌بندی نهایی</title>
+<style>
+@font-face{font-family:'Vazirmatn';font-style:normal;font-weight:400 800;font-display:swap;src:url(https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn%5Bwght%5D.woff2) format('woff2');}
+
+/* ============ DESIGN TOKENS ============ */
+:root{
+  /* surface */
+  --paper:#FBF8F4; --surface:#FFFFFF; --surface-2:#F5F0E9; --sunken:#F0EAE1;
+  /* ink */
+  --ink:#1E1A16; --ink-2:#5A5148; --ink-3:#8C8177; --hair:#E7DFD4; --hair-2:#D9CFC1;
+  /* semantic */
+  --primary:#A8481A; --primary-ink:#8C3B14; --primary-soft:#FBEDE4;
+  --success:#2C6A55; --success-soft:#E6F1EC;
+  --warn:#9A6B12; --warn-soft:#FAF0DC;
+  --weak:#A63A38; --weak-soft:#FBE9E7;
+  --focus:#1E5F8C;
+  /* space */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s7:32px; --s8:40px; --s9:56px;
+  /* radius */
+  --r-s:10px; --r-m:14px; --r-l:20px; --r-xl:26px; --r-full:999px;
+  /* elevation */
+  --e1:0 1px 2px rgba(40,28,16,.05);
+  --e2:0 2px 10px rgba(40,28,16,.06),0 1px 2px rgba(40,28,16,.04);
+  --e3:0 12px 34px rgba(40,28,16,.14),0 2px 8px rgba(40,28,16,.08);
+  /* motion */
+  --ease:cubic-bezier(.22,.9,.28,1); --fast:150ms; --base:240ms;
+  /* safe areas */
+  --sat:env(safe-area-inset-top,0px); --sab:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:'Vazirmatn',system-ui,-apple-system,'Segoe UI',sans-serif;
+  background:var(--paper); color:var(--ink);
+  font-size:16px; line-height:1.85; font-weight:400;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  overscroll-behavior-y:none; -webkit-tap-highlight-color:transparent;
+}
+::selection{background:var(--primary-soft);color:var(--primary-ink)}
+button{font:inherit;color:inherit;margin:0}
+:focus-visible{outline:2.5px solid var(--focus);outline-offset:2px;border-radius:6px}
+
+/* ============ APP FRAME ============ */
+#app{
+  position:relative; width:100%;
+  max-width:520px; margin:0 auto;
+  min-height:100svh; min-height:100dvh;
+  background:var(--paper);
+  box-shadow:0 0 0 1px var(--hair);
+  display:flex; flex-direction:column;
+  overflow:hidden;
+}
+@media (max-width:540px){#app{box-shadow:none}}
+
+/* ---- masthead: tiny, permanent, non-competing ---- */
+.mast{
+  flex:0 0 auto; display:flex; align-items:center; justify-content:space-between;
+  gap:var(--s3); padding:calc(var(--sat) + 9px) var(--s4) 9px;
+  background:rgba(251,248,244,.92); backdrop-filter:saturate(1.4) blur(10px);
+  border-bottom:1px solid var(--hair); position:relative; z-index:20;
+}
+.mast-id{font-size:11.5px;font-weight:700;letter-spacing:.02em;color:var(--ink-2)}
+.mast-id b{color:var(--primary-ink);font-weight:800}
+.credits{display:flex;align-items:center;gap:var(--s2)}
+.cred{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 8px 3px 3px; border-radius:var(--r-full);
+  background:var(--surface); border:1px solid var(--hair);
+  text-decoration:none; color:var(--ink-2); font-size:10.5px; font-weight:600;
+  transition:border-color var(--fast) var(--ease), background var(--fast) var(--ease);
+  min-height:30px;
+}
+.cred:active{background:var(--surface-2)}
+.cred img{width:22px;height:22px;border-radius:50%;object-fit:cover;background:var(--sunken);display:block}
+.cred span{direction:ltr;unicode-bidi:isolate;white-space:nowrap}
+
+/* ---- scroll region ---- */
+.screen{display:none;flex:1 1 auto;min-height:0;flex-direction:column}
+.screen.on{display:flex;animation:enter var(--base) var(--ease) both}
+@keyframes enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.scroll{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.pad{padding:var(--s6) var(--s5) var(--s8)}
+.dock{
+  flex:0 0 auto; padding:var(--s3) var(--s5) calc(var(--sab) + var(--s4));
+  background:linear-gradient(to top,var(--paper) 62%,rgba(251,248,244,0));
+  position:relative; z-index:10;
+}
+
+/* ============ TYPE SCALE ============ */
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--primary-ink);margin:0 0 var(--s3)}
+h1.display{font-size:clamp(26px,7.2vw,32px);line-height:1.42;font-weight:800;letter-spacing:-.015em;margin:0 0 var(--s4)}
+h2.head{font-size:21px;line-height:1.5;font-weight:800;margin:0 0 var(--s3);letter-spacing:-.01em}
+h3.sub{font-size:15.5px;font-weight:800;margin:0 0 var(--s2)}
+.lede{font-size:15.5px;line-height:1.9;color:var(--ink-2);margin:0}
+.meta{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7}
+.center{text-align:center}
+
+/* ============ BUTTONS ============ */
+.btn{
+  display:flex;align-items:center;justify-content:center;gap:var(--s2);
+  width:100%;min-height:56px;padding:0 var(--s5);
+  border:0;border-radius:var(--r-l);cursor:pointer;
+  font-size:16.5px;font-weight:800;letter-spacing:-.01em;
+  transition:transform var(--fast) var(--ease),box-shadow var(--fast) var(--ease),background var(--fast) var(--ease);
+}
+.btn:active{transform:scale(.985)}
+.btn-1{background:var(--primary);color:#fff;box-shadow:0 4px 14px rgba(168,72,26,.26)}
+.btn-1:active{background:var(--primary-ink)}
+.btn-2{background:var(--surface);color:var(--ink);border:1.5px solid var(--hair-2);box-shadow:var(--e1)}
+.btn-3{background:transparent;color:var(--ink-2);min-height:48px;font-size:14.5px;font-weight:700}
+.btn-3:active{background:var(--surface-2)}
+.btn .arw{font-size:15px;opacity:.75}
+
+/* ============ CARDS ============ */
+.card{background:var(--surface);border:1px solid var(--hair);border-radius:var(--r-xl);padding:var(--s5);box-shadow:var(--e2)}
+.card-flat{background:var(--surface-2);border:1px solid var(--hair);border-radius:var(--r-l);padding:var(--s4)}
+
+/* ============ HOME ============ */
+.home-scope{
+  display:flex;align-items:center;gap:var(--s3);
+  margin:var(--s6) 0 0;padding:var(--s4) var(--s5);
+  background:var(--surface);border:1px solid var(--hair);border-radius:var(--r-l);box-shadow:var(--e1);
+}
+.scope-n{font-size:30px;font-weight:800;line-height:1;color:var(--primary-ink);font-variant-numeric:tabular-nums}
+.scope-t{font-size:13.5px;color:var(--ink-2);line-height:1.65}
+.scope-t b{display:block;color:var(--ink);font-size:14.5px;font-weight:800}
+.home-note{display:flex;gap:var(--s3);margin-top:var(--s4);align-items:flex-start}
+.home-note .dot{flex:0 0 auto;width:6px;height:6px;border-radius:50%;background:var(--hair-2);margin-top:11px}
+.home-note p{margin:0;font-size:13.5px;color:var(--ink-2);line-height:1.85}
+
+/* ============ QUIZ HEADER ============ */
+.qbar{flex:0 0 auto;padding:var(--s4) var(--s5) var(--s3);background:var(--paper);border-bottom:1px solid var(--hair)}
+.qbar-top{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s3);margin-bottom:10px}
+.qpos{font-size:13.5px;font-weight:800;color:var(--ink)}
+.qstage{font-size:11.5px;font-weight:700;color:var(--ink-3);letter-spacing:.01em}
+.track{height:5px;border-radius:var(--r-full);background:var(--sunken);overflow:hidden}
+.track i{display:block;height:100%;border-radius:var(--r-full);background:linear-gradient(90deg,var(--primary),#C9682F);transition:width 420ms var(--ease)}
+
+/* ============ QUESTION ============ */
+.qtag{display:inline-block;padding:5px 12px;border-radius:var(--r-full);background:var(--primary-soft);color:var(--primary-ink);font-size:12px;font-weight:800;margin-bottom:var(--s4)}
+.qstem{font-size:18px;line-height:1.95;font-weight:700;letter-spacing:-.005em;margin:0 0 var(--s5)}
+.qbody{font-size:15.5px;line-height:2.05;color:var(--ink)}
+.thinkline{display:flex;align-items:center;gap:var(--s3);margin:var(--s6) 0 var(--s2);color:var(--ink-3)}
+.thinkline::before,.thinkline::after{content:'';flex:1;height:1px;background:var(--hair)}
+.thinkline span{font-size:12px;font-weight:700;white-space:nowrap}
+
+/* ---- inherited content structure ---- */
+.part{display:flex;align-items:flex-start;gap:10px;margin:var(--s4) 0;padding:0}
+.part>.letter{
+  flex:0 0 auto;
+  min-width:30px;padding:0 7px;height:28px;border-radius:9px;
+  background:var(--sunken);color:var(--ink-2);
+  font-size:12.5px;font-weight:800;line-height:1;
+  display:inline-flex;align-items:center;justify-content:center;
+  margin-top:6px;
+}
+.part>.part-body{flex:1 1 auto;min-width:0;margin:0;overflow-wrap:anywhere}
+.part-body>p:first-child{margin-top:0}
+.part-body>p:last-child{margin-bottom:0}
+.chem,.eq,code{font-family:'Vazirmatn',ui-monospace,monospace;direction:ltr;unicode-bidi:isolate;white-space:nowrap;font-weight:700;font-variant-numeric:tabular-nums}
+.chem{background:var(--surface-2);border:1px solid var(--hair);border-radius:7px;padding:1px 6px;font-size:.94em;display:inline-block}
+.eq{display:block;margin:var(--s3) 0;padding:var(--s3) var(--s4);background:var(--surface-2);border:1px solid var(--hair);border-radius:var(--r-m);text-align:center;overflow-x:auto;white-space:nowrap;font-size:15px}
+sub,sup{font-size:.68em;line-height:0}
+.choices{list-style:none;margin:var(--s4) 0 0;padding:0;display:grid;gap:var(--s2)}
+.choices li,.choice{background:var(--surface);border:1px solid var(--hair);border-radius:var(--r-m);padding:12px var(--s4);font-size:15px;line-height:1.8}
+.wordbank{background:var(--warn-soft);border:1px solid #EDD9AE;border-radius:var(--r-m);padding:var(--s4);font-size:14.5px;line-height:2;margin:var(--s4) 0}
+.wordbank b{color:var(--warn)}
+.figure-card{background:var(--surface);border:1px solid var(--hair);border-radius:var(--r-l);padding:var(--s4);margin:var(--s5) 0;overflow-x:auto;text-align:center;box-shadow:var(--e1)}
+.figure-card svg{max-width:100%;height:auto;display:block;margin:0 auto}
+.figure-caption{font-size:12px;color:var(--ink-3);margin-top:var(--s3);line-height:1.7}
+.data-table{width:100%;border-collapse:collapse;margin:var(--s4) 0;font-size:14px}
+.data-table th,.data-table td{border:1px solid var(--hair);padding:9px 10px;text-align:center}
+.data-table th{background:var(--surface-2);font-weight:800;font-size:13px}
+.data-table td{background:var(--surface)}
+/* figure internals */
+svg text{font-family:'Vazirmatn',sans-serif}
+text.f{font-size:13px;font-weight:700;fill:var(--ink)}
+text.fs{font-size:10.5px;fill:var(--ink-2)}
+text.p{font-size:12px;fill:var(--ink)}
+text.ps{font-size:10px;fill:var(--ink-2)}
+text.star{font-size:14px;fill:var(--primary)}
+.ln,.lnr{stroke:var(--ink);stroke-width:1.6;fill:none}
+.lnr{stroke:var(--weak)}
+.dash{stroke:var(--ink-3);stroke-width:1.4;stroke-dasharray:4 3;fill:none}
+.arr,.arrr,.arrb{stroke:var(--ink);stroke-width:1.6;fill:none}
+.arrr{stroke:var(--weak)}.arrb{stroke:var(--focus)}
+.dotb{fill:var(--focus)}.dotr{fill:var(--weak)}
+
+/* ============ ANSWER ============ */
+.reveal{animation:rise 300ms var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.ans{background:var(--success-soft);border:1px solid #CBE0D6;border-radius:var(--r-xl);padding:var(--s5);margin-top:var(--s5)}
+.ans-h{display:flex;align-items:center;gap:var(--s2);font-size:13.5px;font-weight:800;color:var(--success);margin-bottom:var(--s3)}
+.ans-h i{width:20px;height:20px;border-radius:50%;background:var(--success);color:#fff;font-size:11px;font-style:normal;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
+.ans-b{font-size:15.5px;line-height:2.05;color:#20372F}
+.ans-b .chem{background:#fff;border-color:#CBE0D6}
+.ans-b p:first-child{margin-top:0}.ans-b p:last-child{margin-bottom:0}
+
+/* ============ SELF ASSESSMENT ============ */
+.assess{margin-top:var(--s6)}
+.assess-q{font-size:14.5px;font-weight:800;margin:0 0 var(--s2)}
+.assess-h{font-size:12px;color:var(--ink-3);margin:0 0 var(--s4)}
+.opts{display:grid;gap:var(--s2)}
+.opt{
+  display:flex;align-items:center;gap:var(--s3);width:100%;
+  min-height:56px;padding:0 var(--s4);text-align:start;
+  background:var(--surface);border:1.5px solid var(--hair);border-radius:var(--r-l);
+  font-size:15.5px;font-weight:700;cursor:pointer;
+  transition:border-color var(--fast) var(--ease),background var(--fast) var(--ease),transform var(--fast) var(--ease);
+}
+.opt:active{transform:scale(.99)}
+.opt i{width:12px;height:12px;border-radius:50%;flex:0 0 auto;box-shadow:0 0 0 3px var(--surface-2)}
+.opt[data-v=strong] i{background:var(--success)}
+.opt[data-v=shaky] i{background:var(--warn)}
+.opt[data-v=weak] i{background:var(--weak)}
+.opt[data-v=strong]:active,.opt.sel[data-v=strong]{border-color:var(--success);background:var(--success-soft)}
+.opt[data-v=shaky]:active,.opt.sel[data-v=shaky]{border-color:var(--warn);background:var(--warn-soft)}
+.opt[data-v=weak]:active,.opt.sel[data-v=weak]{border-color:var(--weak);background:var(--weak-soft)}
+
+/* ============ REVIEW / FINAL ============ */
+.tally{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s2);margin:var(--s5) 0}
+.tal{background:var(--surface);border:1px solid var(--hair);border-radius:var(--r-l);padding:var(--s4) var(--s2);text-align:center}
+.tal b{display:block;font-size:24px;font-weight:800;line-height:1.2;font-variant-numeric:tabular-nums}
+.tal span{font-size:11.5px;color:var(--ink-3);font-weight:600}
+.tal.g b{color:var(--success)}.tal.y b{color:var(--warn)}.tal.r b{color:var(--weak)}
+.topic{display:flex;align-items:center;gap:var(--s3);padding:14px var(--s4);background:var(--surface);border:1px solid var(--hair);border-radius:var(--r-m);margin-bottom:var(--s2);font-size:14.5px;font-weight:700}
+.topic i{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+.topic.r i{background:var(--weak)}.topic.y i{background:var(--warn)}
+.topic em{margin-inline-start:auto;font-style:normal;font-size:11.5px;font-weight:600;color:var(--ink-3)}
+.ring{display:block;margin:var(--s5) auto var(--s3)}
+.ring circle{fill:none;stroke-width:11;stroke-linecap:round}
+.ring .bg{stroke:var(--sunken)}
+.ring .fg{stroke:var(--primary);stroke-dasharray:408;stroke-dashoffset:408;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 1100ms var(--ease)}
+.ring-n{font-size:36px;font-weight:800;fill:var(--ink);font-variant-numeric:tabular-nums}
+.ring-l{font-size:11px;fill:var(--ink-3);font-weight:600}
+.chk{display:flex;gap:var(--s3);align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--hair);font-size:14.5px;line-height:1.8}
+.chk:last-child{border-bottom:0}
+.chk i{flex:0 0 auto;width:20px;height:20px;border-radius:6px;background:var(--primary-soft);color:var(--primary-ink);font-size:11px;font-style:normal;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-top:4px}
+.pop-icon{width:52px;height:52px;border-radius:var(--r-m);background:var(--primary-soft);color:var(--primary-ink);font-size:24px;display:flex;align-items:center;justify-content:center;margin:0 auto var(--s4)}
+
+/* ============ CREATOR MODAL ============ */
+.veil{position:fixed;inset:0;z-index:100;display:none;align-items:flex-end;justify-content:center;background:rgba(30,26,22,.42);backdrop-filter:blur(3px);padding:var(--s4)}
+.veil.on{display:flex;animation:fade 200ms var(--ease) both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@media (min-height:620px){.veil{align-items:center}}
+.modal{
+  width:100%;max-width:400px;background:var(--surface);
+  border-radius:var(--r-xl);padding:var(--s6) var(--s5) calc(var(--s5) + var(--sab));
+  box-shadow:var(--e3);animation:pop 300ms var(--ease) both;
+}
+@keyframes pop{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
+.modal h2{font-size:17.5px;font-weight:800;margin:0 0 var(--s5);text-align:center;line-height:1.6}
+.maker{display:flex;align-items:center;gap:var(--s3);padding:11px 0}
+.maker+.maker{border-top:1px solid var(--hair)}
+.maker img{width:46px;height:46px;border-radius:50%;object-fit:cover;flex:0 0 auto;background:var(--sunken);border:1px solid var(--hair)}
+.maker-t{flex:1;min-width:0}
+.maker-r{font-size:11.5px;color:var(--ink-3);font-weight:700;margin:0 0 1px}
+.maker-h{font-size:14.5px;font-weight:800;color:var(--ink);text-decoration:none;direction:ltr;unicode-bidi:isolate;display:block;text-align:start}
+.maker-go{flex:0 0 auto;font-size:16px;color:var(--ink-3);padding:8px;margin:-8px}
+.modal .btn{margin-top:var(--s5)}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <header class="mast">
+    <div class="mast-id">شیمی <b>دوازدهم</b></div>
+    <div class="credits">
+      <a class="cred" href="https://t.me/forkcode" target="_blank" rel="noopener" aria-label="کانال برنامه‌نویس پروژه">
+        <img src="data:image/jpeg;base64,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" alt=""><span>@forkcode</span>
+      </a>
+      <a class="cred" href="https://t.me/rebwar_edu" target="_blank" rel="noopener" aria-label="کانال همکار آموزشی">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCACAAIADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDwiaIm4kAdeHPBHvWnowY2WpswUgQHoeuDUdxbyNPMgRW+duc+9XtAVDbakDEUDQFRnHJzjFe7RtDEf+Bfkz6K7TMQ2wCnMPPJG2te9i2+FNNJ8xf3z9OTnmmT2Rgt/MaVwScBRzWncpnwhppMihvPcEsPrXPRbUal/wCX9UZNct0ctaJ/pluquSPMU4IHrWn41Qr4mvuM7duBjn7oqOzhke+hjjAkYyIFCjOctk/oK9UT4f2+ra/PqOqyv5LkbII/lzgAZZvw6D865p4qFLDtSet1+TOdv3bHnPgyMtBq2V+c2bbRjkn6VoaT4N1+6hRoNKutvrIuwdP9rFexJBDo1/pmi+H7GxtprlJZjM6EhFQcHHVjuK8E9M1l6vr2sLCbW8uJLS6tNQFpey6amTJG8ZaORAwJGcYwO9cf9pzkoKnH4b7+b7ESrKMeVnI6r4E8Q3On6fFb6W8rwxlZFWROCce9ZGl+GdY0nW4Tqul3tqnPzyxEL/310/WvbTqYs/AtzqCyXWYbFmWS5UpOW2lQWHGGJx2rW8P3ms+HPFNh4c13VG1Ww1Cxe5jluI1Etu8agurEffXGeSM8V0UM8re0VWcU7drrb7xSr8s035HzDp0ZbUn2c/fP603UYnl0OwKjO6WView5719F2/h3wl47ncppN34e1gwtcRyxxBI5Y843gr+7deR6HmvKPiT8PtT8MWOn2+oxma0V3Cz2xIhf0DE8qfY9ecZr2sHmVOvCVPaXZ+q2+40p1oyi0v62OA0DyzrMEcf7zGdzjoD6CqEtiJJpXmYzPuP+6vNdFoiRrq8MSYymQVRcKvt7ms8xyESiQjJPAHAFelGCnRjGWur/ACRuknBJ9/8AIhvG8vSbEBd5O4jHA7VHorPJdSFiGxG3CjgHHrV67s1bT9NR8kISCOx/zirUUE8SqJWiEW1tqRjGOK9GlTnLERl0Sj+S/rqddOnKUlLorfkR2yr/AGhcZjdS5LAnOCM1aghEUs7Kx2kFypPAA5J/OnzQg7GWUKY5PmIweB1HtV/TpLKVWYMHYryuc8f4V8ZKXvvmM3a1kzAkuGuHZhcxBVOFXAxjH1raihnuvDllHCI5ZZLgkLzjG2qcoaSeVYbaDylOFUk5Axx2Ndn4aW20jRYtR1URWyljsD87c+mB1P07VxSxHsoye7asjiqT5dWxmlW1h4PEZvIZbi/ZPNla3h3+Sh/kPfqcVtrqf9l6tDq0N0934e1UqjsCWFrKBhWHohxgjsRUdrqzwajdX1ur6not6VYTWn7xrdwoBRk/unGfYk+tXdGhtdI0LVLrU4PI0+8uWnt7SRMMqsBhdp/iJBOK8iT5velq3/XyscnM5PR/1/kzXeCbxDDp2saHO1pe2ckqwPdQEJNGflYFeuxsAgj0zWbrl/4X046j/b/iKBdTuruC6ItuXj8k/u0CqCfUEnrmqV8+o6+hW+nms7A/KLS3fazj0dxz+AwKfpWhafpo22FlBDnqVQZ/E9TWlOjp7zsdMMO56v8Ar5F+X4keFrq0kt5ri8SGUYMgsZCB6EbkI4x3FX4L/SNdsNQufDXiWPXfE01qbSAX10scixsRvVQQPmIGM/8A16rNG5A25AHHFZ+p+GdL1RR9vsYZH7Shdrr9GGCPzrpp4OP2JF1MHzrc7LRxBb+HI/DtrZ6vbJqLymex1R95s7aJQJQvJ/dscBcHBLccVc8J6vLeeDNPtLmxbVtMttEhfULYR+bK8jkbUG5sMQgZiOvC45Irg9P1jxH4K+5NP4h0DYY5bW4O65gjPUxP1YAfwn0716N4WhiufCtpB4QumnsdTnaSe/yuYkPUkdmCqEA7EDPeoq0pUtJnBVozpO55H4v8GW+garaazoM/2zw5qcha3mBz5TYOY2/I4zzwQeRXnkWYp0kABwwOD3HpX1bLp+lsmoadM1omlXOTe3TvsxcYURlCTtL8ZPc8E9efm/xTok/hjxHc6bqK5e2kHzAcSJ1Vh7Ef4V9RlGYe3pqjUfvR/FO39M7cNW5klfVGdqyxvBFJBjYrHKj+Hg9R2qq8U6KPPm3AxN8oGNpxVhbCSRpLpWjZGLKUHXHQj60l6rPejIxGsRXJH3s9TX0dOtafMz2oNzV2rXsQTSRWqu0+X85iSFGeMCr9lNaPFLFb2oVjC5DFAvbp61VWcLdP/orySL8uUAPvj9amtb2SS7mM8PlIsDqq98kDk18PzLnR5dSVkxvhqwOp6lbWU0TLGSDKFIC4Ayeh9sV32tT/AGG/068lsTc6dbpJHJ5ce9oGONrY7jGRXF+D9d0rQ7i6uNXuyj+WESMBnY568Cnan4k8Mz6/DNpuoXmnPKzNcXUQdctgbTt6H34ryq3NOa3tY4KslsjufCwsJPEd7qWkP5OnC0/0wmNo0Mm7cpGQBwobPp+NVI7ybxHfjVZ1ZbFciwhbsn/PUj+83b0FGrXR1Lw7oujQ6lHfjVZCJruIBQ9vH80nA6Z+VPxrbhtwq4VQAMYA7e1c60fMzajDuJCgClmOFHJPoK5XxNr2vafeG2tbFbYLj5pV3ufTjOF+h5r0vw/p6zzsZd22GNp/l4OVGV/XFRS6QtzM0sy73dizMeSSetehhaSqR5mKvXcXyxZ5hZeM/ENnGxv9PhuRjKsFMZH1xnIqpD8TtVhnzf6daTQZ5EO5GA9skg/jXrc2gQtGd0akY9K818a+FobWQTQoAj8Ee9d31flV4mH1movtHd6JqFprmmxX+nvvifjB4KsOqkdiKp2eoHwJrcl2Nw8Naqwi1KFDj7NI3C3CenXDfnXLfCMPaapqNlGf3MsQm2noGUgZ/I/pXoOsWUN7YXFpdqHhnQxOPUEYNauCq03TmehFrEU9Tr1i1CS903SH05WsoNRfJRQ0E9i8T8vnOWyQDn7xwe9cH8a9AspNKthZieS78N/Zra4eflnt5B+7fPfDKRn610fwq1ae+8Bix1TUJbefRp3sbmVT8zIn3D+Kleas3o0O/wBTuba2+2r9usTpjO6ZilkYtJGGY8hxhiBgcP8ASvGo1nQrKf8AK9f1PNivZzsfOGnpH5szNdSRCRnG1TgZ96kFvsg+zCZJmUbQ4b5tp6Z/WoERVaHMZ3MZS46bjn/IpY/sUN8j277JZPk8twefT9a+9pzSaZ72Gnpb9e5PBdyl3VLR2YE85wDUKySzXFw00bmUxsoQqQBxxip4bibkLD82OpPApbIPHdyGaTdIVO4EDuOvWvj2/wB4vU4qjvA82LM0cnnCWOQnoF5OPc9vYVTHy/KoO/gnac19keI28LJ4KtWu5NKaCSJY4XO1mcgY+XHJNeKz+BLDVUkvNIk/dqcvCEKkjrnBrl+sJbo854Z/Zdzi/h9rkmneKLJIkwJJBA2RwQ5G7Geh4HPtX0bFDjBPavJND8GRWviTTZYlcxxy+Y+e2ASP1r2CFnHLEFT046cdK48TNNqx0UIygrM2fD8wtr0FwxjkRomAOCQwrWgtxnpWDYDNxEuerj+ddUowSa7Mum3FpnNi/iTIbi1HlZHpzXnnxDEcdiI/4mbivTHkHlE+1eQ/ESVpNRKn7qrxXsxl7pycwnw101Ugu9RfIaVvIT2Uck/nj8q62ULsLDvWF4FlB8NqB1SV1P1zn+orYeUAMW/OuJVrTaPewsbU1Yh+HEj23jTxTbRIh8+2t7tRJ90vhkJ+nyrmtmOCzOt2MkMz6zr813FdXMdpKFgDKdolfrhY1JAHVtorE+H3734ia/Lt3Rx6bbQtnoSzyNj8q7SfwV4Yv4o0Oj29s8OBFNaZglj5BG10II5FeRiZpVpX6nLXhebaPnrxLYRw6veW6dVmnVecceccVi6nKlt5YmiaYgjEka4Gfr2rpvF8qS+Lb6QhQheY5zgZMpx/KuYvNVkh/wBGVFn3HHJxj2Nffwt7GL62X5HoUZqK1dvxAyuJSMoD2zk1dshOlyrFgzMDjk5PTnHaqMjYnAj78LuXkD8/pWjZwTyN5jSQ4CkA/dYew/8A118m3+8XqYTT5Wd++kaFd6boVhLvZrgrc/IjAjcACd2OeRk8+5q9baZaafeSR2G8tIxyxPXPsOBXN2eo6YugxR6nrS2E8QytukpJdDgqQAcAfhn86z28daZZyktqEKKP4mOWI/3Rk15dWEr2QoygtdDoNXiSy1+xmlWQQzSi3j+X5RIEY5J9+QMVtxPyAAemc44+n1rhI/FVr47N1o+ms0QggFxBcyjazTq4Kso7KvfPJBNdN4d1T+07ASSRmG6iYw3MB6xSr95f6j1BFYVISS1REqqm9NjqdPlCXMTHoHH866x72GCcI5G49q4WNueKr3urPLroDkjAUYrry6aTcTixcW7M6/UtReG8MMW3y1IVgR1J/wD11538SSqX6YPJXn866m7nD30z+spP615t4svJtd8Um0sfnOdgPYDux9hXfha7k6jk9EzOtSSUFFas6XwPmLw8zNkeZO7D6YA/pWpJLlWAPOaiihjsbKC1iP7uFAoJ7+p/E5rE1qe4uWg0fSz/AMTPUSY4yP8AljH/AByn2UZ/Eiufn5pOXQ9el+6ppPodP8Jg0lprGs7crqF6fKP96GICNT+JDH8a9F+2pBDLPJhY4lMjZ9AM/wBKxNIsbfTNMtbKyXZbW0SxRr6KBj86wviTrMel+GvJeQJJfSLapnvnk/oMfjXnQi8TXUV9pmPmzxq9uRdRRysP3k1v5zHGcbmJNcrLbRy3sCWbNtdgCWH3ee1dNZJ5gtwGCr9ljUH3P/18VQ/s3yNctVkGyHerFs5BwcnHpX6FUjzKKSvY6YQco3M7Uby6itPOjhaSVnCbQDwcEgkD2BrNMM0un3EmoTzJeSDZHHJC3y5OB9O/aumnv59QOrWsFxNBHdbbiFY2KZZV+UZHOcBl/GoNOkgt7yyimZmWEea4cnLeWpY5J96+ZrSSlyrUywdF4iM605Wik0vV6GD4z0y7ha11FykkV3H9nkQ4YRTR8MmR9NwYdRXIG1wchWU/7m4fpXQavc50+dwxLNKJeHJBc56jp/EeetZqTCSLcvGRQmpHj1qboyte50vw405hqbapcPKmn6cpmuJdvX5SFjUdyc9PoO9SaZf6/oOs214I5FW8O8Ru4dWiJOATn+HGOeRirWhlm0W0QTzi2MYcxK5Vdx+9nHXmsnXbOIafo86xgBlfIx3Dt/jWLlGV4tHpyy2rRpwq331/L/M9x0DXINUgUqjQzgZaF+o9wf4h7itGW2huJ1mkBEqdGBxx6V43okcObcmSSGLzsM0b7SBu5YHsR616sNF8Q2qg6fq1nqMJ5T7ZGUYj/fTg/XFebKCpyvF2OrGYV0OXmV1JXNWRuvJYn15zWdYWNrp7SNZwpG0py7ckt+J/lUUVp4qeXEun6SidNy3jn9NlXU8OahNGz6pqqWtuoyyWabDj3kfkfgBTTSWrOVSje9ipqWp+XKtlZwNeajIP3dtH94/7THoq+pNbvhPw62jtLe3sq3Or3I2zzKPlRf4Yk9FHPuTzUH2jSvD+mvHocUBnkWVgQ2fOaLG8PKc8jOTnsD6VlaPf3+r6ulxDKI3ttxAKcbWZQ8EjA4OAN6OB8wwR0IqZzc42WiByb1Z6PA2OuB39q8c8ca9aeI9Xurd9zWKRtDCCpxJg8sPxHX2FdX4n18IW0y3OWlikaRwfuhQPl/HNec3LbZ4zjhSTj/gJr38iy6Uf9pqL0X6huzJtWMkC27ZCmBGRt33uuR7YNPtbp5LlFupGaNZFTB69RnnrVrUY4fJWe0UIXCqUHGwH27dao2j25u1LMSpkiV93YbuM/rX0Cv8A1urHo04uCtf/ACZa8d+CvFXhDV9PkvLKSOE3oS3uIiHjkL/NtyO4IbAPY1iXOovFHq32vSLZZordYEkKSRkb25OAcZ+tejfHfX79vEng/wAJXl0866fCk17IzZaS5ZD1P+yp4/3q82aW4t9OvXgvLmJbm7WPbv3K2wE8g+mRXzCnaep41HDzqYRyh/N+S/4JxniG6gZrVLRJkVY183znDlpAMMQQBhT2Haq1ucBgOhGRUnieR3vkEhUlUxlUCd89BUNm2YkPpxTTu2cUk1pLc734b2yavqOgaZdSGO1ublLeRlb5gC2OBX1P430T4Z6eLPRdZsdJgvdvmWsDKUZ8nHUYBJI6E89a+V/hjMttf6XN5Klob1D5jSEbcSA5AHp717x8fbBZ/iN4akkt4ZYmmgYuzMDtDNkemPl7/wBKxVrnpYp1pQptt25dDmfit4JsPCviTSE8Ps622qlpEtmO4QkEZweTtOenasyRNZhzcW7XTSCZJSYjhZFRSxBA6kklPcKtb3xb1K3v/GlnBMsk0VjZRxRtFKApZ+Tn9O/tUNtc/YIIILdUZFyvDZwM5HT61E6Eqn8NXYniZyUIVHey/r8CAar4j/0141uzOs63KRKg2iNURjFz1B3Ecc5Bpr6drOpXii7N7PYNLc43yhHjHmBox83BU7VIyDjJHSrtjr1xJB5k8UcRycDJIx2Oaittcvr0RhWSINI4bYOdqrnqelTDL8RLaKQ/aE8WhWtpB9p1yeLziwkd0+QbjGUkXjqGB5wBz+FLqfiFntFFgGSB4WZJehwFOPp7VlaxcSmPCrJLI0gKgnPWMZPNZcwK2lm28j/QMOvXnBx/WvXwuURhO9X3mvu/4IXbCxYsLVmOSLOUk59dtYMs8i6pJuDhTIFUZ4Zdhyfz4rZ09/3MX/Xm/wD7LWXcSYlGOflf+VfSKi3GLTtqvyRpBaIoM5gBMy7iiqT9D0pIpvtTLtXG24hUEnrk5/wo15/LmdoyBhY94IzkbOlVdOYfZoSSYt13F8wGdvvjvTlSSnK/RP8AJnSpOMXDpqcvp2r32qeKWu9SmkuLqWZ7mWR2O4ttbPP4/oK172+eLR9MYFw/mSzKcA4+YAdfpWL4SCT65M1xHIfLgkb9zgHOMd+vWui1Kz0t00SCe7vbOL7KzyO9r5m0lnYcKRnPA/HNfGxSbdzyuerToR5Nm3+hxnia+n1LWbi7u5DLcTNvkcjBZj1PFRWBJjI96h1Eg3su3O0HAyMGprLABIOQaI7nLJ33Op8LXq28MowMpNu+9j9PrX2xd3fhzxl4J/tRXtLmL7M4jldwrwsUw4yfusOc5r4Z0CEyyT/vYUG4DDvtz/n1rXmtSVmH2m0G60nwpm7hc9h144rNr3j0pt1cLB3+HT7zT1u/sLrxdCugyb9NtzstnlycouFDfocZx2rtLUywwwySSxSrPmVPLAChMDHAA57/AI14ulpNPfRW9vKC8UC5Ebj5geSPQ9RxXd6JaxQTu6uN4jVG2jb0/vAEjPvXVg9ZpWOaTbrW7WX3Kx2mpyCOytlQD54FP86i8Oy/KdxJw03/AKBVLV5/ksMscC3HA7nJpvh6bIcZySZPw+Svfp0v3iR0KPvFrVLqVbSSWArujfJZhkBdgDceoFZt7MmLAGM5+wHbKD/snIPr61eRnj8xWA2u2Qfb0IrMvXxaW4wMLakDsRwa7PYu9/63NVDQk0+T9zHk/wDLo/8A7LWZdSYfP+y38qmspMRp/wBerD9VrOu3+Y4/ut/Su2MbQX9djVR91EevPvkugBkgR8DqQFGf51HYSCSOyG5kV72Jcjgj3pusvuupdo+ZWUA/8AFS6KFNxYJMxAN7GCwGce+O9ZVovmq+jNZR+L5n/9k=" alt=""><span>@rebwar_edu</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ===== HOME ===== -->
+  <section class="screen on" id="s-home">
+    <div class="scroll"><div class="pad">
+      <p class="eyebrow">شیمی دوازدهم</p>
+      <h1 class="display">آزمون جمع‌بندی نهایی</h1>
+      <p class="lede">۱۷ سؤال منتخب برای مرور مهم‌ترین مباحث، قبل از امتحان نهایی.</p>
+
+      <div class="home-scope">
+        <div class="scope-n">۱۷</div>
+        <div class="scope-t"><b>سؤال با پاسخ تشریحی</b>هفت سؤال کوتاه برای شروع، ده سؤال اصلی دنبالش</div>
+      </div>
+
+      <div class="home-note"><span class="dot"></span><p>هر سؤال رو اول خودت حل می‌کنی، بعد پاسخ تشریحی رو می‌بینی.</p></div>
+      <div class="home-note"><span class="dot"></span><p>آخر کار، فقط موضوع‌هایی که لنگ زدی دوباره میان جلوی چشمت.</p></div>
+    </div></div>
+    <div class="dock">
+      <button class="btn btn-1" id="btn-start">شروع آزمون</button>
+      <button class="btn btn-3" id="btn-resume" hidden>ادامه از جایی که موندی</button>
+    </div>
+  </section>
+
+  <!-- ===== QUIZ ===== -->
+  <section class="screen" id="s-quiz">
+    <div class="qbar">
+      <div class="qbar-top">
+        <span class="qpos" id="q-pos"></span>
+        <span class="qstage" id="q-stage"></span>
+      </div>
+      <div class="track"><i id="q-track" style="width:0"></i></div>
+    </div>
+    <div class="scroll" id="q-scroll"><div class="pad">
+      <span class="qtag" id="q-topic"></span>
+      <div class="qstem" id="q-stem"></div>
+      <div class="qbody" id="q-body"></div>
+      <div id="q-think"><div class="thinkline"><span>اول خودت حلش کن</span></div></div>
+      <div id="q-after"></div>
+    </div></div>
+    <div class="dock" id="q-dock"></div>
+  </section>
+
+  <!-- ===== REVIEW ===== -->
+  <section class="screen" id="s-review">
+    <div class="scroll"><div class="pad">
+      <div class="pop-icon">◈</div>
+      <h2 class="head center" id="rv-title"></h2>
+      <p class="lede center" id="rv-text"></p>
+      <div class="tally">
+        <div class="tal g"><b id="rv-g">۰</b><span>بلد بودم</span></div>
+        <div class="tal y"><b id="rv-y">۰</b><span>با شک</span></div>
+        <div class="tal r"><b id="rv-r">۰</b><span>بلد نبودم</span></div>
+      </div>
+      <div id="rv-list"></div>
+    </div></div>
+    <div class="dock">
+      <button class="btn btn-1" id="rv-go"></button>
+      <button class="btn btn-3" id="rv-skip">مستقیم برو به جمع‌بندی</button>
+    </div>
+  </section>
+
+  <!-- ===== FINAL ===== -->
+  <section class="screen" id="s-final">
+    <div class="scroll"><div class="pad">
+      <h2 class="head center" id="fn-title">تموم شد.</h2>
+      <svg class="ring" width="150" height="150" viewBox="0 0 150 150" aria-hidden="true">
+        <circle class="bg" cx="75" cy="75" r="65"></circle>
+        <circle class="fg" id="fn-ring" cx="75" cy="75" r="65"></circle>
+        <text class="ring-n" id="fn-num" x="75" y="78" text-anchor="middle" dominant-baseline="middle">۰٪</text>
+        <text class="ring-l" x="75" y="101" text-anchor="middle">آمادگی</text>
+      </svg>
+      <p class="lede center" id="fn-text"></p>
+      <div class="tally">
+        <div class="tal g"><b id="fn-g">۰</b><span>بلد بودم</span></div>
+        <div class="tal y"><b id="fn-y">۰</b><span>با شک</span></div>
+        <div class="tal r"><b id="fn-r">۰</b><span>بلد نبودم</span></div>
+      </div>
+      <div id="fn-focus"></div>
+      <div class="card" style="margin-top:16px">
+        <h3 class="sub">قبل از جلسه</h3>
+        <div id="fn-tips"></div>
+      </div>
+      <p class="meta center" style="margin-top:24px">ساخته‌شده توسط <a href="https://t.me/forkcode" target="_blank" rel="noopener" style="color:var(--ink-2)" dir="ltr">@forkcode</a> و <a href="https://t.me/rebwar_edu" target="_blank" rel="noopener" style="color:var(--ink-2)" dir="ltr">@rebwar_edu</a></p>
+    </div></div>
+    <div class="dock">
+      <button class="btn btn-2" id="fn-again" hidden></button>
+      <button class="btn btn-3" id="fn-reset">شروع دوباره از اول</button>
+    </div>
+  </section>
+</div>
+
+<!-- ===== CREATOR CREDIT (once) ===== -->
+<div class="veil" id="veil" role="dialog" aria-modal="true" aria-labelledby="veil-t">
+  <div class="modal">
+    <h2 id="veil-t">این آزمون با همکاری ساخته شده</h2>
+    <a class="maker" href="https://t.me/forkcode" target="_blank" rel="noopener" style="text-decoration:none">
+      <img src="data:image/jpeg;base64,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" alt="">
+      <span class="maker-t"><span class="maker-r">برنامه‌نویس پروژه</span><span class="maker-h">@forkcode</span></span>
+      <span class="maker-go">‹</span>
+    </a>
+    <a class="maker" href="https://t.me/rebwar_edu" target="_blank" rel="noopener" style="text-decoration:none">
+      <img src="data:image/jpeg;base64,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" alt="">
+      <span class="maker-t"><span class="maker-r">همکاری آموزشی</span><span class="maker-h">@rebwar_edu</span></span>
+      <span class="maker-go">‹</span>
+    </a>
+    <p class="meta center" style="margin-top:14px">ارتباط مستقیم: <a href="https://t.me/Oxmit" target="_blank" rel="noopener" dir="ltr" style="color:var(--primary-ink);font-weight:700">@Oxmit</a></p>
+    <button class="btn btn-1" id="veil-ok">باشه، شروع کنیم</button>
+  </div>
+</div>
+
+<script id="content" type="application/json">[{"id": "q-desc-1", "track": "core", "topic": "مولکول‌های آلی و عدد اکسایش", "minutes": 4, "difficulty": 2, "stem": "با توجه به فرمول‌های ساختاری زیر به پرسش‌ها پاسخ دهید.", "body": "<figure aria-label=\"فرمول‌های ساختاری پارازایلن و ترفتالیک اسید\" class=\"figure-card\" role=\"img\">\n<svg lang=\"fa\" viewbox=\"0 0 560 200\">\n<!-- Paraxylene -->\n<g>\n<polygon class=\"ln\" points=\"169,95 147,133 103,133 81,95 103,57 147,57\"></polygon>\n<circle class=\"ln\" cx=\"125\" cy=\"95\" r=\"22\"></circle>\n<line class=\"ln\" x1=\"81\" x2=\"49\" y1=\"95\" y2=\"95\"></line>\n<text class=\"f\" text-anchor=\"end\" x=\"44\" y=\"100\">H₃C</text>\n<text class=\"star\" text-anchor=\"middle\" x=\"49\" y=\"70\">*</text>\n<line class=\"ln\" x1=\"169\" x2=\"201\" y1=\"95\" y2=\"95\"></line>\n<text class=\"f\" text-anchor=\"start\" x=\"206\" y=\"100\">CH₃</text>\n<text class=\"star\" text-anchor=\"middle\" x=\"201\" y=\"70\">*</text>\n<text class=\"p\" text-anchor=\"middle\" x=\"125\" y=\"180\">پارازایلن</text>\n</g>\n<!-- Terephthalic acid -->\n<g>\n<polygon class=\"ln\" points=\"439,95 417,133 373,133 351,95 373,57 417,57\"></polygon>\n<circle class=\"ln\" cx=\"395\" cy=\"95\" r=\"22\"></circle>\n<line class=\"ln\" x1=\"351\" x2=\"319\" y1=\"95\" y2=\"95\"></line>\n<line class=\"ln\" x1=\"316\" x2=\"316\" y1=\"92\" y2=\"64\"></line>\n<line class=\"ln\" x1=\"322\" x2=\"322\" y1=\"92\" y2=\"64\"></line>\n<text class=\"f\" text-anchor=\"middle\" x=\"319\" y=\"54\">O</text>\n<line class=\"ln\" x1=\"313\" x2=\"285\" y1=\"95\" y2=\"95\"></line>\n<text class=\"f\" text-anchor=\"end\" x=\"280\" y=\"100\">OH</text>\n<text class=\"star\" text-anchor=\"middle\" x=\"343\" y=\"126\">*</text>\n<line class=\"ln\" x1=\"439\" x2=\"471\" y1=\"95\" y2=\"95\"></line>\n<line class=\"ln\" x1=\"468\" x2=\"468\" y1=\"92\" y2=\"64\"></line>\n<line class=\"ln\" x1=\"474\" x2=\"474\" y1=\"92\" y2=\"64\"></line>\n<text class=\"f\" text-anchor=\"middle\" x=\"471\" y=\"54\">O</text>\n<line class=\"ln\" x1=\"477\" x2=\"505\" y1=\"95\" y2=\"95\"></line>\n<text class=\"f\" text-anchor=\"start\" x=\"510\" y=\"100\">OH</text>\n<text class=\"star\" text-anchor=\"middle\" x=\"447\" y=\"126\">*</text>\n<text class=\"p\" text-anchor=\"middle\" x=\"395\" y=\"180\">ترفتالیک اسید</text>\n</g>\n</svg>\n<figcaption class=\"figure-caption\">فرمول‌های ساختاری پارازایلن و ترفتالیک اسید</figcaption>\n</figure>\n<div class=\"part\"><span class=\"letter\">الف</span><div class=\"part-body\"><p>برای تهیه ترفتالیک‌اسید از پارازایلن باید چه تغییری در ساختار پارازایلن ایجاد کرد؟</p></div></div>\n<div class=\"part\"><span class=\"letter\">ب</span><div class=\"part-body\"><p>عدد اکسایش اتم‌های ستاره‌دار را مشخص کنید.</p></div></div>\n<div class=\"part\"><span class=\"letter\">پ</span><div class=\"part-body\"><p>برای تبدیل پارازایلن به ترفتالیک‌اسید کدام دسته از مواد زیر را مناسب می‌دانید؟ (اکسنده یا کاهنده) توضیح دهید.</p></div></div>", "answer": "<ul>\n<li><b>الف)</b> باید ۳ اتم <span class=\"chem\" dir=\"ltr\">H</span> موجود در <span class=\"chem\" dir=\"ltr\">CH<sub>3</sub></span> را به <span class=\"chem\" dir=\"ltr\">C(=O)−OH</span> تبدیل کرد که برای این کار باید از یک اکسنده استفاده کرد.</li>\n<li><b>ب)</b> پارازایلن: <span class=\"chem\" dir=\"ltr\">7 − 4 = −3</span> ؛ ترفتالیک‌اسید: <span class=\"chem\" dir=\"ltr\">1 − 4 = +3</span></li>\n<li><b>پ)</b> <b>اکسنده</b>؛ زیرا نیاز به تولید گروه اسیدی است که در آن کربن باید دارای عدد اکسایش <span class=\"chem\" dir=\"ltr\">+3</span> باشد، به‌طوری‌که از عدد اکسایش <span class=\"chem\" dir=\"ltr\">−3</span> به <span class=\"chem\" dir=\"ltr\">+3</span> برسد.</li>\n</ul>", "hasFigure": true}, {"id": "q-desc-2", "track": "core", "topic": "اسید و باز", "minutes": 6, "difficulty": 3, "stem": "با توجه به شکل‌های زیر که مربوط به انحلال دو اسید تک‌پروتونی دارند، اختلاف <span class=\"chem\" dir=\"ltr\">pH</span> دو محلول اسیدی <span class=\"chem\" dir=\"ltr\">(pH<sub>(HB)</sub> − pH<sub>(HA)</sub>)</span> را در دمای اتاق محاسبه کنید. <span class=\"chem\" dir=\"ltr\">(log 2 = 0.3)</span>", "body": "<figure aria-label=\"محلول‌های دو اسید تک‌پروتونی HA و HB\" class=\"figure-card\" role=\"img\">\n<svg lang=\"fa\" viewbox=\"0 0 440 190\">\n<g>\n<path class=\"ln\" d=\"M60,28 h120 v124 q0,26 -26,26 h-68 q-26,0 -26,-26 z\"></path>\n<ellipse class=\"ln\" cx=\"120\" cy=\"28\" fill=\"#fff\" rx=\"60\" ry=\"8\"></ellipse>\n<path d=\"M66,78 h108 v72 q0,20 -20,20 h-72 q-20,0 -20,-20 z\" fill=\"#D6E9FB\"></path>\n<text class=\"f\" text-anchor=\"middle\" x=\"120\" y=\"106\">HA</text>\n<text class=\"ps\" text-anchor=\"middle\" x=\"120\" y=\"132\">۰/۲ مولار</text>\n<text class=\"fs\" text-anchor=\"middle\" x=\"120\" y=\"158\">α = ۰/۱</text>\n</g>\n<g>\n<path class=\"ln\" d=\"M260,28 h120 v124 q0,26 -26,26 h-68 q-26,0 -26,-26 z\"></path>\n<ellipse class=\"ln\" cx=\"320\" cy=\"28\" fill=\"#fff\" rx=\"60\" ry=\"8\"></ellipse>\n<path d=\"M266,78 h108 v72 q0,20 -20,20 h-72 q-20,0 -20,-20 z\" fill=\"#D6E9FB\"></path>\n<text class=\"f\" text-anchor=\"middle\" x=\"320\" y=\"106\">HB</text>\n<text class=\"ps\" text-anchor=\"middle\" x=\"320\" y=\"132\">۰/۱ مولار</text>\n<text class=\"fs\" text-anchor=\"middle\" x=\"320\" y=\"158\">Kₐ = ۱۰⁻⁷</text>\n</g>\n</svg>\n<figcaption class=\"figure-caption\">انحلال دو اسید تک‌پروتونی HA (۰/۲ مولار، α = ۰/۱) و HB (۰/۱ مولار، Kₐ = ۱۰⁻⁷)</figcaption>\n</figure>", "answer": "<p>محلول <span class=\"chem\" dir=\"ltr\">(HA)</span>:</p>\n<p class=\"eq\"><span class=\"chem\" dir=\"ltr\">[H<sup>+</sup>] = Mα ⇒ 0.2 × 0.1 = 0.02 mol·L<sup>−1</sup></span></p>\n<p class=\"eq\"><span class=\"chem\" dir=\"ltr\">pH = −log[H<sup>+</sup>] = −log 0.02 = 1.7</span></p>\n<p>محلول <span class=\"chem\" dir=\"ltr\">(HB)</span>:</p>\n<p class=\"eq\"><span class=\"chem\" dir=\"ltr\">K<sub>a</sub> = [H<sup>+</sup>][B<sup>−</sup>] / [HB] = [H<sup>+</sup>]<sup>2</sup> / (M − [H<sup>+</sup>])</span></p>\n<p class=\"eq\"><span class=\"chem\" dir=\"ltr\">10<sup>−7</sup> = [H<sup>+</sup>]<sup>2</sup> / 10<sup>−1</sup> ⇒ [H<sup>+</sup>]<sup>2</sup> = 10<sup>−8</sup> ⇒ [H<sup>+</sup>] = 10<sup>−4</sup> mol·L<sup>−1</sup> ⇒ pH = 4</span></p>\n<p class=\"eq\"><span class=\"chem\" dir=\"ltr\">pH<sub>HB</sub> − pH<sub>HA</sub> = 4 − 1.7 = 2.3</span></p>", "hasFigure": true}, {"id": "q-desc-3", "track": "core", "topic": "مفاهیم پایه", "minutes": 4, "difficulty": 1, "stem": "دلیل هر یک از عبارت‌های زیر را بنویسید.", "body": "<div class=\"part\"><span class=\"letter\">الف</span><div class=\"part-body\"><p>سیلیس از جمله مواد دیرگداز به شمار می‌رود.</p></div></div>\n<div class=\"part\"><span class=\"letter\">ب</span><div class=\"part-body\"><p>برای درمان برخی از بیماری‌های معده، از داروهای حاوی سدیم هیدروژن کربنات و منیزیم هیدروکسید استفاده می‌شود.</p></div></div>\n<div class=\"part\"><span class=\"letter\">پ</span><div class=\"part-body\"><p>سدیم، فلزی فعال است که در طبیعت به حالت آزاد یافت نمی‌شود.</p></div></div>\n<div class=\"part\"><span class=\"letter\">ت</span><div class=\"part-body\"><p>با جایگزین کردن نیم‌سلول آهن با نیم‌سلول منیزیم در سلول گالوانی آهن ـ مس، نیروی الکتروموتوری سلول افزایش می‌یابد.</p></div></div>", "answer": "<ul>\n<li><b>الف)</b> بین اتم‌های سازنده سیلیس پیوند اشتراکی وجود دارد و برای شکستن پیوند بین این اتم‌ها و ذوب این ماده، باید پیوندهای اشتراکی قوی بین اتم‌های سازنده آن را شکست.</li>\n<li><b>ب)</b> سدیم هیدروژن کربنات و منیزیم هیدروکسید موجود در این داروها خاصیت بازی دارند و با مصرف این داروها، اسید معده موجود در بدن فرد بیمار خنثی می‌شود.</li>\n<li><b>پ)</b> فلز سدیم یک کاهنده قوی بوده و یون‌های آن بسیار پایدارتر از اتم‌های این عنصر هستند و به همین خاطر، این فلز در ترکیب‌های طبیعی و گوناگون خود تنها به شکل یون سدیم وجود دارد.</li>\n<li><b>ت)</b> چون نیم‌سلول منیزیم در مقایسه با نیم‌سلول آهن پتانسیل کاهشی استاندارد کمتری دارد، با جایگزین کردن نیم‌سلول آهن (نیم‌سلول آندی) سلول گالوانی آهن ـ مس با نیم‌سلول منیزیم، نیروی الکتروموتوری سلول افزایش می‌یابد.</li>\n</ul>", "hasFigure": false}, {"id": "q-desc-4", "track": "core", "topic": "انرژی شبکه و پیوند یونی", "minutes": 4, "difficulty": 2, "stem": "با توجه به معادله‌های داده شده به پرسش‌ها پاسخ دهید.", "body": "<p class=\"eq\"><span class=\"chem\" dir=\"ltr\">1) NaCl(s) + 787 kJ → Na<sup>+</sup>(g) + Cl<sup>−</sup>(g)</span></p>\n<p class=\"eq\"><span class=\"chem\" dir=\"ltr\">2) KBr(s) + ? kJ → K<sup>+</sup>(g) + Br<sup>−</sup>(g)</span></p>\n<p class=\"eq\"><span class=\"chem\" dir=\"ltr\">3) MgO(s) + 3798 kJ → Mg<sup>2+</sup>(g) + O<sup>2−</sup>(g)</span></p>\n<div class=\"part\"><span class=\"letter\">الف</span><div class=\"part-body\"><p>به جای علامت سؤال «؟» در معادله (۲) کدام عدد (<span class=\"chem\" dir=\"ltr\">810</span> یا <span class=\"chem\" dir=\"ltr\">689</span>) را می‌توان قرار داد؟ دلیل بنویسید.</p></div></div>\n<div class=\"part\"><span class=\"letter\">ب</span><div class=\"part-body\"><p>کدام ترکیب سدیم کلرید (<span class=\"chem\" dir=\"ltr\">NaCl</span>) یا منیزیم اکسید (<span class=\"chem\" dir=\"ltr\">MgO</span>) نقطه ذوب بالاتری دارد؟</p></div></div>\n<div class=\"part\"><span class=\"letter\">پ</span><div class=\"part-body\"><p>بر اثر فروپاشی شبکه بلور نیم مول منیزیم اکسید، چند مول یون گازی تولید می‌شود؟</p></div></div>", "answer": "<ul>\n<li><b>الف)</b> <span class=\"chem\" dir=\"ltr\">689</span> ؛ زیرا چگالی بار یون‌های سازنده شبکه در ترکیب سدیم کلرید بیشتر از یون‌های سازنده پتاسیم برمید است.</li>\n<li><b>ب)</b> منیزیم اکسید.</li>\n<li><b>پ)</b> <span class=\"chem\" dir=\"ltr\">1</span> مول یون گازی.</li>\n</ul>", "hasFigure": false}, {"id": "q-desc-5", "track": "core", "topic": "سلول سوختی", "minutes": 5, "difficulty": 3, "stem": "شکل زیر نشان‌دهنده نوعی سلول سوختی است. با توجه به آن به سؤالات زیر پاسخ دهید.", "body": "<figure aria-label=\"شکل سلول سوختی با آند، کاتد و پل یونی\" class=\"figure-card\" role=\"img\">\n<svg lang=\"fa\" viewbox=\"0 0 620 340\">\n<defs>\n<marker id=\"m-e\" markerheight=\"9\" markerwidth=\"9\" orient=\"auto\" refx=\"7\" refy=\"4.5\"><path d=\"M0,0 L8,4.5 L0,9 z\" fill=\"#D64541\"></path></marker>\n<marker id=\"m-ion\" markerheight=\"9\" markerwidth=\"9\" orient=\"auto\" refx=\"7\" refy=\"4.5\"><path d=\"M0,0 L8,4.5 L0,9 z\" fill=\"#2783DE\"></path></marker>\n</defs>\n<!-- electrodes -->\n<rect class=\"ln\" fill=\"#fff\" height=\"150\" width=\"14\" x=\"90\" y=\"120\"></rect>\n<rect class=\"ln\" fill=\"#fff\" height=\"150\" width=\"14\" x=\"516\" y=\"120\"></rect>\n<!-- ion bridge / membrane -->\n<rect fill=\"#E5F2FC\" height=\"120\" stroke=\"#2783DE\" stroke-dasharray=\"4 3\" width=\"48\" x=\"286\" y=\"150\"></rect>\n<text class=\"ps\" text-anchor=\"middle\" x=\"310\" y=\"288\">B</text>\n<!-- external wire + lamp -->\n<line class=\"ln\" x1=\"97\" x2=\"97\" y1=\"120\" y2=\"70\"></line>\n<line class=\"ln\" x1=\"523\" x2=\"523\" y1=\"120\" y2=\"70\"></line>\n<line class=\"ln\" x1=\"97\" x2=\"523\" y1=\"70\" y2=\"70\"></line>\n<circle class=\"ln\" cx=\"310\" cy=\"70\" fill=\"#FFF6DC\" r=\"16\"></circle>\n<text class=\"fs\" text-anchor=\"middle\" x=\"310\" y=\"75\">لامپ</text>\n<!-- electron flow on wire (A anode -> C cathode) right to left in RTL: electrons from A(انود) to C(کاتد) -->\n<line marker-end=\"url(#m-e)\" stroke=\"#D64541\" stroke-width=\"2\" x1=\"360\" x2=\"270\" y1=\"70\" y2=\"70\"></line>\n<text class=\"f\" fill=\"#D64541\" text-anchor=\"middle\" x=\"315\" y=\"58\">e⁻</text>\n<!-- ion movement in bridge: H+ toward cathode (left, toward A?) -->\n<line marker-end=\"url(#m-ion)\" stroke=\"#2783DE\" stroke-width=\"2\" x1=\"330\" x2=\"292\" y1=\"200\" y2=\"200\"></line>\n<text class=\"fs\" fill=\"#2783DE\" text-anchor=\"middle\" x=\"311\" y=\"192\">H⁺</text>\n<!-- gases -->\n<text class=\"f\" text-anchor=\"middle\" x=\"60\" y=\"250\">X₂(g)</text>\n<circle class=\"dotr\" cx=\"70\" cy=\"230\" r=\"4\"></circle><circle class=\"dotr\" cx=\"60\" cy=\"218\" r=\"4\"></circle><circle class=\"dotr\" cx=\"76\" cy=\"206\" r=\"4\"></circle>\n<text class=\"f\" text-anchor=\"middle\" x=\"560\" y=\"250\">H₂(g)</text>\n<circle class=\"dotb\" cx=\"552\" cy=\"230\" r=\"4\"></circle><circle class=\"dotb\" cx=\"562\" cy=\"218\" r=\"4\"></circle><circle class=\"dotb\" cx=\"548\" cy=\"206\" r=\"4\"></circle>\n<!-- labels A and C -->\n<text class=\"p\" text-anchor=\"middle\" x=\"97\" y=\"300\">A</text>\n<text class=\"p\" text-anchor=\"middle\" x=\"523\" y=\"300\">C</text>\n</svg>\n<figcaption class=\"figure-caption\">شکل سلول سوختی: قسمت‌های A، B و C و جهت حرکت الکترون‌ها در مدار بیرونی</figcaption>\n</figure>\n<div class=\"part\"><span class=\"letter\">الف</span><div class=\"part-body\"><p>واکنش کلی انجام شده در این سلول را نوشته و گونه‌های اکسنده و کاهنده را مشخص کنید.</p></div></div>\n<div class=\"part\"><span class=\"letter\">ب</span><div class=\"part-body\"><p>قسمت (<span class=\"chem\" dir=\"ltr\">A</span>) نشان‌دهنده کدام جزء این سلول است؟</p></div></div>\n<div class=\"part\"><span class=\"letter\">پ</span><div class=\"part-body\"><p>جهت حرکت الکترون‌ها در مدار بیرونی مطابق با کدام‌یک از جهت‌های نشان داده شده (<span class=\"chem\" dir=\"ltr\">1</span> یا <span class=\"chem\" dir=\"ltr\">2</span>) است؟</p></div></div>\n<div class=\"part\"><span class=\"letter\">ت</span><div class=\"part-body\"><p>با پیشرفت علم و فناوری، سلول‌های سوختی تازه‌ای طراحی شده‌اند که در آن‌ها گاز متان مصرف می‌شود. با توجه به واکنش <u>موازنه نشده</u> زیر، مشخص کنید که عدد اکسایش اتم (اتم‌های) کربن در مجموع چند واحد تغییر می‌کند.</p>\n<p class=\"eq\"><span class=\"chem\" dir=\"ltr\">CH<sub>4</sub> + O<sub>2</sub> → CO<sub>2</sub> + H<sub>2</sub>O</span></p></div></div>", "answer": "<ul>\n<li><b>الف)</b> <span class=\"chem\" dir=\"ltr\">2H<sub>2</sub>(g) + O<sub>2</sub>(g) → 2H<sub>2</sub>O(g)</span><br/>اکسنده: <span class=\"chem\" dir=\"ltr\">O<sub>2</sub>(g)</span> — کاهنده: <span class=\"chem\" dir=\"ltr\">H<sub>2</sub>(g)</span></li>\n<li><b>ب)</b> کاتد (با کاتالیزگر).</li>\n<li><b>پ)</b> جهت (<span class=\"chem\" dir=\"ltr\">1</span>).</li>\n<li><b>ت)</b> <span class=\"chem\" dir=\"ltr\">8</span> واحد.</li>\n</ul>", "hasFigure": true}, {"id": "q-desc-6", "track": "core", "topic": "تعادل شیمیایی", "minutes": 6, "difficulty": 3, "stem": "در رابطه با تعادل <span class=\"chem\" dir=\"ltr\">PCl<sub>3</sub>(g) + Cl<sub>2</sub>(g) ⇌ PCl<sub>5</sub>(g) , ΔH &lt; 0</span>، به پرسش‌های زیر پاسخ دهید.", "body": "<div class=\"part\"><span class=\"letter\">الف</span><div class=\"part-body\"><p>با افزایش دمای سامانه، غلظت تعادلی <span class=\"chem\" dir=\"ltr\">PCl<sub>5</sub></span> در ظرف چگونه (افزایش یا کاهش) تغییر می‌کند؟</p></div></div>\n<div class=\"part\"><span class=\"letter\">ب</span><div class=\"part-body\"><p>اگر ثابت تعادل واکنش برابر <span class=\"chem\" dir=\"ltr\">0.8 L·mol<sup>−1</sup></span> و غلظت تعادلی گازهای <span class=\"chem\" dir=\"ltr\">PCl<sub>5</sub></span> و <span class=\"chem\" dir=\"ltr\">Cl<sub>2</sub></span> در یک ظرف ۲ لیتری برابر با <span class=\"chem\" dir=\"ltr\">0.10 mol·L<sup>−1</sup></span> باشد، مقدار مول تعادلی گاز <span class=\"chem\" dir=\"ltr\">PCl<sub>3</sub></span> برابر با چند مول خواهد بود؟</p></div></div>\n<div class=\"part\"><span class=\"letter\">پ</span><div class=\"part-body\"><p>از ابتدای کار تا لحظه برقراری این تعادل در یک ظرف ۲ لیتری، فشار گازهای موجود در ظرف چگونه (افزایش یا کاهش) تغییر می‌کند؟ (در ابتدا <span class=\"chem\" dir=\"ltr\">PCl<sub>5</sub></span> در ظرف وجود ندارد)</p></div></div>", "answer": "<ul>\n<li><b>الف)</b> کاهش می‌یابد.</li>\n<li><b>ب)</b> ابتدا با نوشتن رابطه ثابت تعادل، غلظت <span class=\"chem\" dir=\"ltr\">PCl<sub>3</sub></span> را پیدا می‌کنیم:\n<p class=\"eq\"><span class=\"chem\" dir=\"ltr\">K = [PCl<sub>5</sub>] / ([PCl<sub>3</sub>] × [Cl<sub>2</sub>]) = 0.1 / ([PCl<sub>3</sub>] × 0.1) = 0.8 ⇒ [PCl<sub>3</sub>] = 1.25 mol·L<sup>−1</sup></span></p>\nسپس مقدار مول <span class=\"chem\" dir=\"ltr\">PCl<sub>3</sub></span> را برحسب مول محاسبه می‌کنیم:\n<p class=\"eq\"><span class=\"chem\" dir=\"ltr\">n<sub>PCl3</sub> = [PCl<sub>3</sub>] × V = 1.25 mol·L<sup>−1</sup> × 2 L = 2.5 mol</span></p></li>\n<li><b>پ)</b> کاهش می‌یابد.</li>\n</ul>", "hasFigure": false}, {"id": "q-desc-7", "track": "core", "topic": "اسید و باز", "minutes": 5, "difficulty": 2, "stem": "غلظت تعادلی استیک اسید برابر <span class=\"chem\" dir=\"ltr\">0.02</span> مولار و ثابت یونش آن <span class=\"chem\" dir=\"ltr\">K<sub>a</sub> = 1.8 × 10<sup>−5</sup></span> است. در رابطه با این محلول، به پرسش‌های زیر پاسخ دهید.", "body": "<p class=\"eq\"><span class=\"chem\" dir=\"ltr\">CH<sub>3</sub>COOH(aq) ⇌ H<sup>+</sup>(aq) + CH<sub>3</sub>COO<sup>−</sup>(aq)</span></p>\n<div class=\"part\"><span class=\"letter\">الف</span><div class=\"part-body\"><p>غلظت یون هیدرونیوم در این محلول را محاسبه کنید؟</p></div></div>\n<div class=\"part\"><span class=\"letter\">ب</span><div class=\"part-body\"><p>این محلول با یک قطعه فلز منیزیم سریع‌تر واکنش می‌دهد یا محلول <span class=\"chem\" dir=\"ltr\">0.02</span> مولار هیدروبرمیک اسید؟</p></div></div>", "answer": "<ul>\n<li><b>الف)</b>\n<p class=\"eq\"><span class=\"chem\" dir=\"ltr\">K = [H<sup>+</sup>][CH<sub>3</sub>COO<sup>−</sup>] / [CH<sub>3</sub>COOH] → [CH<sub>3</sub>COO<sup>−</sup>] = [H<sup>+</sup>] → 1.8 × 10<sup>−5</sup> = [H<sup>+</sup>]<sup>2</sup> / 0.02</span></p>\n<p class=\"eq\"><span class=\"chem\" dir=\"ltr\">→ [H<sup>+</sup>] = 6 × 10<sup>−4</sup> mol·L<sup>−1</sup></span></p></li>\n<li><b>ب)</b> هیدروبرمیک اسید.</li>\n</ul>", "hasFigure": false}, {"id": "q-desc-8", "track": "core", "topic": "پیوند و قطبیت", "minutes": 5, "difficulty": 3, "stem": "به پرسش‌های زیر پاسخ دهید.", "body": "<div class=\"part\"><span class=\"letter\">الف</span><div class=\"part-body\"><p>بار الکتریکی یون چنداتمی مقابل را با محاسبه، مشخص کرده و فرمول شیمیایی ترکیب حاصل از واکنش این یون با یون منیزیم را بنویسید. (در ساختار یون مورد نظر، همه اتم‌ها از قاعده هشت‌تایی پیروی می‌کنند.)</p>\n<figure aria-label=\"ساختار لوئیس یون چنداتمی فسفات\" class=\"figure-card\" role=\"img\">\n<svg lang=\"fa\" viewbox=\"0 0 280 200\">\n<text class=\"f\" text-anchor=\"middle\" x=\"140\" y=\"106\">P</text>\n<line class=\"ln\" x1=\"140\" x2=\"140\" y1=\"82\" y2=\"60\"></line>\n<text class=\"f\" text-anchor=\"middle\" x=\"140\" y=\"52\">O</text>\n<line class=\"ln\" x1=\"158\" x2=\"200\" y1=\"100\" y2=\"100\"></line>\n<text class=\"f\" text-anchor=\"middle\" x=\"216\" y=\"106\">O</text>\n<line class=\"ln\" x1=\"140\" x2=\"140\" y1=\"118\" y2=\"140\"></line>\n<text class=\"f\" text-anchor=\"middle\" x=\"140\" y=\"158\">O</text>\n<line class=\"ln\" x1=\"122\" x2=\"80\" y1=\"100\" y2=\"100\"></line>\n<text class=\"f\" text-anchor=\"middle\" x=\"64\" y=\"106\">O</text>\n<circle class=\"ln\" cx=\"128\" cy=\"28\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"152\" cy=\"28\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"124\" cy=\"40\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"124\" cy=\"52\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"156\" cy=\"40\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"156\" cy=\"52\" r=\"1.6\"></circle>\n<circle class=\"ln\" cx=\"212\" cy=\"84\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"226\" cy=\"84\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"212\" cy=\"116\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"226\" cy=\"116\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"234\" cy=\"94\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"234\" cy=\"106\" r=\"1.6\"></circle>\n<circle class=\"ln\" cx=\"128\" cy=\"174\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"152\" cy=\"174\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"124\" cy=\"152\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"124\" cy=\"164\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"156\" cy=\"152\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"156\" cy=\"164\" r=\"1.6\"></circle>\n<circle class=\"ln\" cx=\"52\" cy=\"84\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"66\" cy=\"84\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"52\" cy=\"116\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"66\" cy=\"116\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"46\" cy=\"94\" r=\"1.6\"></circle><circle class=\"ln\" cx=\"46\" cy=\"106\" r=\"1.6\"></circle>\n</svg>\n<figcaption class=\"figure-caption\">ساختار لوئیس یون چنداتمی (فسفات)</figcaption>\n</figure></div></div>\n<div class=\"part\"><span class=\"letter\">ب</span><div class=\"part-body\"><p>یک باریکه مایع از کدام ماده زیر، در مجاورت با یک میله باردار از مسیر خود منحرف می‌شود؟</p>\n<figure aria-label=\"دو ماده برای آزمایش انحراف باریکه\" class=\"figure-card\" role=\"img\">\n<svg lang=\"fa\" viewbox=\"0 0 600 190\">\n<!-- ماده 1: polar diatomic -->\n<circle cx=\"340\" cy=\"88\" fill=\"#cfe0f5\" r=\"30\" stroke=\"#2C2C2B\"></circle>\n<circle cx=\"392\" cy=\"88\" fill=\"#f5d5d0\" r=\"30\" stroke=\"#2C2C2B\"></circle>\n<text class=\"ps\" text-anchor=\"middle\" x=\"330\" y=\"140\">آبی</text>\n<text class=\"ps\" text-anchor=\"middle\" x=\"402\" y=\"140\">قرمز</text>\n<text class=\"p\" text-anchor=\"middle\" x=\"366\" y=\"172\">ماده (۱)</text>\n<!-- ماده 2: linear nonpolar -->\n<circle cx=\"472\" cy=\"88\" fill=\"#f5d5d0\" r=\"20\" stroke=\"#2C2C2B\"></circle>\n<circle cx=\"514\" cy=\"88\" fill=\"#cfe0f5\" r=\"20\" stroke=\"#2C2C2B\"></circle>\n<circle cx=\"556\" cy=\"88\" fill=\"#f5d5d0\" r=\"20\" stroke=\"#2C2C2B\"></circle>\n<text class=\"ps\" text-anchor=\"middle\" x=\"472\" y=\"128\">قرمز</text>\n<text class=\"ps\" text-anchor=\"middle\" x=\"514\" y=\"128\">آبی</text>\n<text class=\"ps\" text-anchor=\"middle\" x=\"556\" y=\"128\">قرمز</text>\n<text class=\"p\" text-anchor=\"middle\" x=\"514\" y=\"172\">ماده (۲)</text>\n</svg>\n<figcaption class=\"figure-caption\">دو ماده برای بررسی انحراف باریکه مایع در مجاورت میله باردار</figcaption>\n</figure></div></div>\n<div class=\"part\"><span class=\"letter\">پ</span><div class=\"part-body\"><p>دمای جوش یک نمونه از گاز هیدروژن کلرید بیشتر است یا دمای جوش یک نمونه از گاز فلوئور؟ دلیل بنویسید.</p></div></div>", "answer": "<ul>\n<li><b>الف)</b> بار یون به کمک رابطه (بار یون = مجموع کل الکترون‌های پیوندی و ناپیوندی یون − مجموع الکترون‌های ظرفیت اتم‌ها) محاسبه می‌شود. در نتیجه بار یون به این صورت محاسبه می‌شود:\n<p class=\"eq\"><span class=\"chem\" dir=\"ltr\">((4×6) + 5) − (16×2) = 29 − 32 = −3 ⇒ Mg<sub>3</sub>(PO<sub>4</sub>)<sub>2</sub></span></p></li>\n<li><b>ب)</b> ماده (<span class=\"chem\" dir=\"ltr\">1</span>).</li>\n<li><b>پ)</b> هیدروژن کلرید؛ زیرا بین مواد مولکولی که جرم مولی تقریباً برابری دارند، مواد قطبی نسبت به مواد ناقطبی نقطه جوش بالاتری دارند. بنابراین دمای جوش گاز هیدروژن کلرید (ماده قطبی) از گاز فلوئور (ماده ناقطبی) بیشتر است.</li>\n</ul>", "hasFigure": true}, {"id": "q-desc-9", "track": "core", "topic": "برقکافت و الکتروشیمی", "minutes": 5, "difficulty": 2, "stem": "شکل زیر نشان‌دهنده نوعی سلول الکترولیتی برقکافت سدیم کلرید مذاب می‌باشد که جریان الکتریکی در قسمتی از آن به وسیله نوعی رسانای یونی (محلول <span class=\"chem\" dir=\"ltr\">A</span>) جریان می‌یابد. با توجه به آن به سؤالات زیر پاسخ دهید.", "body": "<figure aria-label=\"سلول الکترولیتی برقکافت سدیم کلرید مذاب\" class=\"figure-card\" role=\"img\">\n<svg lang=\"fa\" viewbox=\"0 0 620 250\">\n<defs>\n<marker id=\"m-na\" markerheight=\"9\" markerwidth=\"9\" orient=\"auto\" refx=\"7\" refy=\"4.5\"><path d=\"M0,0 L8,4.5 L0,9 z\" fill=\"#D64541\"></path></marker>\n</defs>\n<rect class=\"ln\" fill=\"#fff\" height=\"64\" width=\"80\" x=\"30\" y=\"120\"></rect>\n<text class=\"p\" text-anchor=\"middle\" x=\"70\" y=\"158\">باتری</text>\n<text class=\"star\" text-anchor=\"middle\" x=\"70\" y=\"112\">✳</text>\n<line class=\"ln\" x1=\"110\" x2=\"150\" y1=\"150\" y2=\"150\"></line>\n<path class=\"ln\" d=\"M150,128 v66 q0,14 14,14 h72 q14,0 14,-14 v-66\" fill=\"#EEF4FB\"></path>\n<line class=\"ln\" x1=\"180\" x2=\"180\" y1=\"128\" y2=\"196\"></line>\n<text class=\"f\" text-anchor=\"middle\" x=\"216\" y=\"182\">NaCl(l)</text>\n<text class=\"f\" fill=\"#D64541\" text-anchor=\"middle\" x=\"222\" y=\"150\">Na⁺</text>\n<line marker-end=\"url(#m-na)\" stroke=\"#D64541\" stroke-width=\"2\" x1=\"226\" x2=\"190\" y1=\"162\" y2=\"162\"></line>\n<path class=\"ln\" d=\"M330,148 v46 q0,14 14,14 h72 q14,0 14,-14 v-46\" fill=\"#D6E9FB\"></path>\n<text class=\"p\" text-anchor=\"middle\" x=\"380\" y=\"186\">محلول A</text>\n<line class=\"ln\" x1=\"250\" x2=\"250\" y1=\"148\" y2=\"118\"></line>\n<line class=\"ln\" x1=\"360\" x2=\"360\" y1=\"148\" y2=\"118\"></line>\n<path class=\"ln\" d=\"M250,118 q0,-28 55,-28 q55,0 55,28\" fill=\"none\"></path>\n</svg>\n<figcaption class=\"figure-caption\">سلول الکترولیتی برقکافت سدیم کلرید مذاب با محلول A به‌عنوان رسانای یونی</figcaption>\n</figure>\n<div class=\"part\"><span class=\"letter\">الف</span><div class=\"part-body\"><p>قطب نشان داده شده در باتری کدام قطب باتری (مثبت یا منفی) است؟</p></div></div>\n<div class=\"part\"><span class=\"letter\">ب</span><div class=\"part-body\"><p>در شرایط دما و غلظت یکسان با جایگزین کردن کدام‌یک از محلول‌های زیر به جای محلول <span class=\"chem\" dir=\"ltr\">A</span>، این سلول عملکرد بهتری را خواهد داشت؟ چرا؟</p>\n<div class=\"choices\">\n<div class=\"choice\"><span class=\"chem\" dir=\"ltr\">1)</span> محلول نیتریک اسید</div>\n<div class=\"choice\"><span class=\"chem\" dir=\"ltr\">2)</span> محلول باز آمونیاک</div>\n</div></div></div>\n<div class=\"part\"><span class=\"letter\">پ</span><div class=\"part-body\"><p>با افزودن چه ماده‌ای به سدیم کلرید خالص در این سلول، می‌توان در راستای شیمی سبز گام برداشت؟</p></div></div>", "answer": "<ul>\n<li><b>الف)</b> قطب مثبت.</li>\n<li><b>ب)</b> محلول نیتریک اسید؛ زیرا نیتریک اسید، یک اسید قوی بوده و برخلاف آمونیاک که یک باز ضعیف است، در آب به‌طور کامل یونش پیدا کرده و غلظت یون‌ها و رسانایی آن بیشتر است.</li>\n<li><b>پ)</b> کلسیم کلرید (<span class=\"chem\" dir=\"ltr\">CaCl<sub>2</sub></span>).</li>\n</ul>", "hasFigure": true}, {"id": "q-desc-10", "track": "core", "topic": "پاک‌کننده‌ها و صابون", "minutes": 4, "difficulty": 2, "stem": "با توجه به جدول و ساختارهای مطرح شده به پرسش‌ها پاسخ دهید.", "body": "<div class=\"figure-card\">\n<table class=\"data-table\">\n<thead><tr><th>شماره</th><th>فرمول / ساختار</th></tr></thead>\n<tbody>\n<tr><td><span class=\"chem\" dir=\"ltr\">1</span></td><td><span class=\"chem\" dir=\"ltr\">CH<sub>3</sub>(CH<sub>2</sub>)<sub>16</sub>COO<sup>−</sup>Na<sup>+</sup></span></td></tr>\n<tr><td><span class=\"chem\" dir=\"ltr\">2</span></td><td><span class=\"chem\" dir=\"ltr\">CH<sub>3</sub>(CH<sub>2</sub>)<sub>11</sub>C<sub>6</sub>H<sub>4</sub>−A</span></td></tr>\n<tr><td><span class=\"chem\" dir=\"ltr\">3</span></td><td><span class=\"chem\" dir=\"ltr\">HCl</span></td></tr>\n<tr><td><span class=\"chem\" dir=\"ltr\">4</span></td><td><span class=\"chem\" dir=\"ltr\">CH<sub>3</sub>(CH<sub>2</sub>)<sub>2</sub>COO<sup>−</sup>K<sup>+</sup></span></td></tr>\n</tbody>\n</table>\n</div>\n<div class=\"part\"><span class=\"letter\">الف</span><div class=\"part-body\"><p>ساز و کار پاک‌کنندگی ساختار (<span class=\"chem\" dir=\"ltr\">1</span>) براساس تشکیل چه نوع مخلوطی (بین آلاینده و پاک‌کننده) بیان می‌شود؟</p></div></div>\n<div class=\"part\"><span class=\"letter\">ب</span><div class=\"part-body\"><p>در ساختار (<span class=\"chem\" dir=\"ltr\">2</span>) به جای (<span class=\"chem\" dir=\"ltr\">A</span>) چه فرمولی باید قرار گیرد تا پاک‌کننده‌ای ایجاد شود که در آب‌های سخت خاصیت پاک‌کنندگی خود را حفظ می‌کند؟</p></div></div>\n<div class=\"part\"><span class=\"letter\">پ</span><div class=\"part-body\"><p>در ساختار (<span class=\"chem\" dir=\"ltr\">4</span>) چه تغییری باید ایجاد شود تا تبدیل به یک پاک‌کننده صابونی مایع شود؟</p></div></div>\n<div class=\"part\"><span class=\"letter\">ت</span><div class=\"part-body\"><p>کدام پاک‌کننده(ها) افزون بر برهم‌کنش میان ذرات با آلاینده‌ها واکنش می‌دهند؟</p></div></div>", "answer": "<ul>\n<li><b>الف)</b> کلوتیدها.</li>\n<li><b>ب)</b> <span class=\"chem\" dir=\"ltr\">−SO<sub>3</sub><sup>−</sup>Na<sup>+</sup></span> یا <span class=\"chem\" dir=\"ltr\">−SO<sub>3</sub><sup>−</sup></span></li>\n<li><b>پ)</b> تعداد کربن زنجیر کربنی باید زیادتر بشود.</li>\n<li><b>ت)</b> <span class=\"chem\" dir=\"ltr\">HCl</span> یا شماره (<span class=\"chem\" dir=\"ltr\">3</span>).</li>\n</ul>", "hasFigure": false}, {"id": "q-test-1", "track": "rapid", "topic": "مرور سریع مفاهیم", "minutes": 2, "difficulty": 1, "stem": "با استفاده از واژه‌های درون کادر، عبارت‌های زیر را کامل کنید. (برخی از واژه‌ها اضافی است.)", "body": "<div class=\"wordbank\"><b>واژه‌ها:</b> دو بعدی، سیلیس، هشتاد، رودیم، آمونیاک، صد، سه بعدی، روبیم، نیتروژن مونوکسید، سیلیسیم کربید</div>\n<div class=\"part\"><span class=\"letter\">الف</span><div class=\"part-body\"><p>بازده واکنش تولید نوعی ماده ضدعفونی‌کننده با استفاده از گاز اتان، از دیدگاه اتمی برابر با ...... درصد است.</p></div></div>\n<div class=\"part\"><span class=\"letter\">ب</span><div class=\"part-body\"><p>در مبدل کاتالیستی خودروهای بنزینی، از فلز ...... به‌عنوان کاتالیزگر استفاده شده و در این مبدل‌ها، گاز ...... مصرف می‌شود.</p></div></div>\n<div class=\"part\"><span class=\"letter\">ج</span><div class=\"part-body\"><p>وجود ...... در ساختار سنگ و صخره‌ها، عامل ایجاد استحکام و ماندگاری در این مواد است.</p></div></div>\n<div class=\"part\"><span class=\"letter\">د</span><div class=\"part-body\"><p>گرافن، یک گونه شیمیایی ...... است که همانند عناصر فلزی، رسانایی الکتریکی دارد.</p></div></div>", "answer": "<ul>\n<li><b>الف)</b> صد</li>\n<li><b>ب)</b> رودیم ـ نیتروژن مونوکسید</li>\n<li><b>ج)</b> سیلیس</li>\n<li><b>د)</b> دو بعدی</li>\n</ul>", "hasFigure": false}, {"id": "q-test-2", "track": "rapid", "topic": "مرور سریع مفاهیم", "minutes": 2, "difficulty": 1, "stem": "با استفاده از واژه‌های درون کادر، جمله‌های زیر را کامل کنید. (برخی واژه‌ها اضافی است)", "body": "<div class=\"wordbank\"><b>واژه‌ها:</b> یون‌های، کاهش، اتم‌های، فلزی، مصرف، مولکولی، تولید، کووالانس، افزایش</div>\n<div class=\"part\"><span class=\"letter\">الف</span><div class=\"part-body\"><p>آنتالپی فروپاشی، گرمای ...... شده در فشار ثابت برای فروپاشی یک مول از شبکه یونی و تبدیل آن به ...... گازی سازنده است.</p></div></div>\n<div class=\"part\"><span class=\"letter\">ب</span><div class=\"part-body\"><p>ترکیب‌هایی که در دما و فشار اتاق به حالت مایع هستند، به یقین جزو مواد ...... هستند.</p></div></div>\n<div class=\"part\"><span class=\"letter\">ج</span><div class=\"part-body\"><p>نیتریل آلپایزی از نیکل و تیتانیوم است که به آلپایژ هوشمند معروف است. این آلپایژ جزء مواد ...... دسته‌بندی می‌شود.</p></div></div>\n<div class=\"part\"><span class=\"letter\">د</span><div class=\"part-body\"><p>هنگامی که در دمای ثابت، فشار بر یک تعادل گازی ...... می‌یابد، واکنش در جهت شمار مول‌های گازی بیشتر پیش می‌رود.</p></div></div>", "answer": "<ul>\n<li><b>الف)</b> مصرف ـ یون‌های</li>\n<li><b>ب)</b> مولکولی</li>\n<li><b>ج)</b> فلزی</li>\n<li><b>د)</b> کاهش</li>\n</ul>", "hasFigure": false}, {"id": "q-test-3", "track": "rapid", "topic": "نیروهای بین‌مولکولی و تعادل", "minutes": 2, "difficulty": 2, "stem": "در هریک از جمله‌های زیر، واژه درست را از داخل کمانک انتخاب کنید.", "body": "<div class=\"part\"><span class=\"letter\">آ</span><div class=\"part-body\"><p>نیروی بین مولکولی غالب میان ذرات اتیلن‌گلیکول، از نوع (وان‌دروالسی / هیدروژنی) است.</p></div></div>\n<div class=\"part\"><span class=\"letter\">ب</span><div class=\"part-body\"><p>نیروی الکتروموتوری در سلول گالوانی هیدروژن - مس، (بیشتر / کمتر) از سلول گالوانی روی - مس است.</p></div></div>\n<div class=\"part\"><span class=\"letter\">پ</span><div class=\"part-body\"><p>با افزایش دمای سامانه در یک واکنش تعادلی گرم‌گیری، مقدار ثابت تعادل واکنش (کاهش / افزایش) پیدا می‌کند.</p></div></div>\n<div class=\"part\"><span class=\"letter\">ت</span><div class=\"part-body\"><p>در ساختار بلوری (فلزها / ترکیب‌های یونی) دریا الکترونی وجود دارد که برخی خواص (فیزیکی / شیمیایی) این مواد را توجیه می‌کند.</p></div></div>", "answer": "<ul>\n<li><b>آ)</b> هیدروژنی</li>\n<li><b>ب)</b> بیشتر</li>\n<li><b>پ)</b> افزایش</li>\n<li><b>ت)</b> فلزها ـ فیزیکی</li>\n</ul>", "hasFigure": false}, {"id": "q-test-4", "track": "rapid", "topic": "محلول‌ها و الکتروشیمی", "minutes": 3, "difficulty": 2, "stem": "در هر یک از جمله‌های زیر واژه درست را از داخل کمانک انتخاب کنید.", "body": "<div class=\"part\"><span class=\"letter\">آ</span><div class=\"part-body\"><p>ذره‌های سازندۀ سوسپانسیون (توده‌های مولکول / ذره‌های ریز ماده) است.</p></div></div>\n<div class=\"part\"><span class=\"letter\">ب</span><div class=\"part-body\"><p>نوعی پاک‌کننده که به شکل پودر عرضه می‌شود شامل مخلوط (آلومینیوم هیدروکسید و پودر سدیم / سدیم هیدروکسید و پودر آلومینیوم) است.</p></div></div>\n<div class=\"part\"><span class=\"letter\">پ</span><div class=\"part-body\"><p>بر اثر انحلال <span class=\"chem\" dir=\"ltr\">Li<sub>2</sub>O</span> در آب یون (هیدروسیل / هیدروکسید) تولید شده و محلول حاصل یک الکترولیت (قوی / ضعیف) است.</p></div></div>\n<div class=\"part\"><span class=\"letter\">ت</span><div class=\"part-body\"><p>پتانسیل کاهشی <span class=\"chem\" dir=\"ltr\">Zn<sup>2+</sup>/Zn</span> برابر <span class=\"chem\" dir=\"ltr\">−0.76</span> ولت است، بنابراین یون <span class=\"chem\" dir=\"ltr\">Zn<sup>2+</sup></span> نسبت به یون <span class=\"chem\" dir=\"ltr\">Cu<sup>2+</sup></span> (کاهنده ضعیف‌تری / اکسنده قوی‌تری) محسوب می‌شود.</p></div></div>\n<div class=\"part\"><span class=\"letter\">ث</span><div class=\"part-body\"><p>نیم‌واکنش <span class=\"chem\" dir=\"ltr\">2H<sup>+</sup>(aq) + 2e<sup>−</sup> → H<sub>2</sub>(g)</span> در قطب (منفی / مثبت) سلول برقکافت آب انجام می‌شود.</p></div></div>", "answer": "<ul>\n<li><b>آ)</b> ذره‌های ریز ماده</li>\n<li><b>ب)</b> سدیم هیدروکسید و پودر آلومینیوم</li>\n<li><b>پ)</b> هیدروکسید ـ قوی</li>\n<li><b>ت)</b> اکسنده قوی‌تری</li>\n<li><b>ث)</b> منفی</li>\n</ul>", "hasFigure": false}, {"id": "q-test-5", "track": "rapid", "topic": "عناصر واسطه و آلی", "minutes": 2, "difficulty": 2, "stem": "در هر یک از جمله‌های زیر، واژه درست را از داخل کمانک انتخاب کنید.", "body": "<div class=\"part\"><span class=\"letter\">الف</span><div class=\"part-body\"><p>در واکنش میان محلولی از نمک وانادیم <span class=\"chem\" dir=\"ltr\">(IV)</span> که به رنگ (آبی/سبز) دیده می‌شود با فلز روی، فلز روی در نقش (اکسنده/کاهنده) است.</p></div></div>\n<div class=\"part\"><span class=\"letter\">ب</span><div class=\"part-body\"><p>با افزایش دمای سامانه واکنش در فرایند هاب، مقدار ثابت تعادل واکنش مورد نظر (افزایش/کاهش) پیدا می‌کند.</p></div></div>\n<div class=\"part\"><span class=\"letter\">ج</span><div class=\"part-body\"><p>در آرایش الکترونی تیتانیوم، (همانند/برخلاف) آرایش الکترونی کلسیم، (چهار/پنج) زیرلایه دو الکترونی وجود دارد.</p></div></div>\n<div class=\"part\"><span class=\"letter\">د</span><div class=\"part-body\"><p>در مراحل تولید کربوکسیلیک اسیدها از آلکن‌ها، در مرحله اول آلکن‌ها را به (اترها/الکل‌ها) تبدیل می‌کنند.</p></div></div>", "answer": "<ul>\n<li><b>الف)</b> آبی ـ کاهنده</li>\n<li><b>ب)</b> کاهش</li>\n<li><b>ج)</b> برخلاف ـ پنج</li>\n<li><b>د)</b> الکل‌ها</li>\n</ul>", "hasFigure": false}, {"id": "q-test-6", "track": "rapid", "topic": "درست یا نادرست", "minutes": 3, "difficulty": 2, "stem": "درستی یا نادرستی هر یک از عبارت‌های زیر را مشخص کنید. شکل درست عبارت‌های نادرست را بنویسید.", "body": "<div class=\"part\"><span class=\"letter\">آ</span><div class=\"part-body\"><p>صابون فسفات‌دار برای از بین بردن جوش صورت و همچنین قارچ‌های پوستی استفاده می‌شود.</p></div></div>\n<div class=\"part\"><span class=\"letter\">ب</span><div class=\"part-body\"><p>واکنش میان مخلوط سدیم هیدروکسید و پودر آلومینیوم با آب نوعی واکنش گرم‌گیری است که با تولید گاز اکسیژن همراه است.</p></div></div>\n<div class=\"part\"><span class=\"letter\">پ</span><div class=\"part-body\"><p>در اثر مبادله <span class=\"chem\" dir=\"ltr\">0.3</span> مول الکترون در سلول گالوانی آلومینیوم ـ نقره، <span class=\"chem\" dir=\"ltr\">2.7</span> گرم از جرم تیغه آند کاسته می‌شود. <span class=\"chem\" dir=\"ltr\">(Al = 27, Ag = 108 g·mol<sup>−1</sup>)</span></p></div></div>\n<div class=\"part\"><span class=\"letter\">ت</span><div class=\"part-body\"><p>سیلیسیم خالص به دلیل داشتن خواص نوری ویژه در ساخت منشورها و عدسی‌ها به‌کار می‌رود.</p></div></div>", "answer": "<ul>\n<li><b>آ)</b> نادرست ـ صابون <u>گوگرددار</u> برای از بین بردن جوش صورت و همچنین قارچ‌های پوستی استفاده می‌شود.</li>\n<li><b>ب)</b> نادرست ـ واکنش میان مخلوط سدیم هیدروکسید و پودر آلومینیوم با آب نوعی واکنش <u>گرماده</u> است که با تولید گاز <u>هیدروژن</u> همراه است.</li>\n<li><b>پ)</b> درست</li>\n<li><b>ت)</b> نادرست ـ <u>سیلیس</u> خالص به دلیل داشتن خواص نوری ویژه در ساخت منشورها و عدسی‌ها به‌کار می‌رود.</li>\n</ul>", "hasFigure": false}, {"id": "q-test-7", "track": "rapid", "topic": "درست یا نادرست", "minutes": 3, "difficulty": 2, "stem": "درستی یا نادرستی هر یک از عبارت‌های زیر را مشخص کنید. شکل درست عبارت‌های نادرست را بنویسید.", "body": "<div class=\"part\"><span class=\"letter\">آ</span><div class=\"part-body\"><p>آرایش الکترونی وانادیم <span class=\"chem\" dir=\"ltr\">(V)</span> در محلولی از نمک‌های این عنصر که به رنگ سبز دیده می‌شود، به صورت <span class=\"chem\" dir=\"ltr\">[Ar] 4s<sup>2</sup></span> است.</p></div></div>\n<div class=\"part\"><span class=\"letter\">ب</span><div class=\"part-body\"><p>در مسیر گازهای خروجی از خودروها قطعه‌ای به نام مبدل کاتالیستی قرار می‌دهند که می‌تواند باعث حذف یا کاهش آلاینده‌ها شود.</p></div></div>\n<div class=\"part\"><span class=\"letter\">پ</span><div class=\"part-body\"><p>متانول مایع بی‌رنگ، بسیار سمی و ساده‌ترین عضو خانواده الکل‌ها است که می‌توان آن را از چوب تهیه کرد.</p></div></div>\n<div class=\"part\"><span class=\"letter\">ت</span><div class=\"part-body\"><p>گاز کربن دی‌اکسید، خاصیت اسیدی داشته و عدد اکسایش کربن در آن برابر با <span class=\"chem\" dir=\"ltr\">4</span> است.</p></div></div>\n<div class=\"part\"><span class=\"letter\">ث</span><div class=\"part-body\"><p>در سلول گالوانی روی - مس، بخش قابل توجهی از انرژی الکتریکی به انرژی شیمیایی تبدیل می‌شود.</p></div></div>", "answer": "<ul>\n<li><b>آ)</b> نادرست ـ آرایش الکترونی وانادیم <span class=\"chem\" dir=\"ltr\">(V)</span> در محلولی از نمک‌های این عنصر که به رنگ سبز دیده می‌شود (محلولی که حاوی کاتیون <span class=\"chem\" dir=\"ltr\">V<sup>3+</sup></span> است)، به صورت <span class=\"chem\" dir=\"ltr\">[Ar] 3d<sup>2</sup></span> خواهد بود.</li>\n<li><b>ب)</b> درست</li>\n<li><b>پ)</b> درست</li>\n<li><b>ت)</b> نادرست ـ گاز کربن دی‌اکسید، خاصیت اسیدی داشته و عدد اکسایش کربن در آن برابر با <span class=\"chem\" dir=\"ltr\">+4</span> است.</li>\n<li><b>ث)</b> نادرست ـ در سلول‌های گالوانی، بخش قابل توجهی از <u>انرژی شیمیایی</u> به <u>انرژی الکتریکی</u> تبدیل می‌شود.</li>\n</ul>", "hasFigure": false}]</script>
+<script>(function(){
+'use strict';
+
+/* ---------- content layer (invisible to the student) ---------- */
+var QS;
+try { QS = JSON.parse(document.getElementById('content').textContent); } catch(e){ QS = []; }
+
+/* rapid warm-up first, then the full descriptive questions */
+var ORDER = QS.filter(function(q){ return q.track === 'rapid'; })
+              .concat(QS.filter(function(q){ return q.track !== 'rapid'; }));
+var N = ORDER.length;
+var WARM = QS.filter(function(q){ return q.track === 'rapid'; }).length;
+
+/* ---------- helpers ---------- */
+var D = '۰۱۲۳۴۵۶۷۸۹';
+function fa(n){ return String(n).replace(/[0-9]/g, function(d){ return D[+d]; }); }
+function $(id){ return document.getElementById(id); }
+function on(el, fn){ if(el) el.addEventListener('click', fn); }
+
+var store = (function(){
+  var ok = true;
+  try { localStorage.setItem('__t','1'); localStorage.removeItem('__t'); } catch(e){ ok = false; }
+  var mem = {};
+  return {
+    get: function(k){ try { return ok ? localStorage.getItem(k) : (mem[k] || null); } catch(e){ return null; } },
+    set: function(k,v){ try { ok ? localStorage.setItem(k,v) : (mem[k]=v); } catch(e){} },
+    del: function(k){ try { ok ? localStorage.removeItem(k) : delete mem[k]; } catch(e){} }
+  };
+})();
+var K_INTRO = 'chem12_intro_seen', K_SESS = 'chem12_session';
+
+/* ---------- application layer ---------- */
+var S = { list: [], i: 0, mode: 'main', results: {}, seen: 0 };
+function persist(){ store.set(K_SESS, JSON.stringify(S)); }
+
+var cur = 's-home';
+function go(id){
+  if(cur === id) return;
+  var a = $(cur); if(a) a.classList.remove('on');
+  var b = $(id); b.classList.add('on');
+  cur = id;
+  var sc = b.querySelector('.scroll'); if(sc) sc.scrollTop = 0;
+}
+
+function tally(){
+  var t = { strong:0, shaky:0, weak:0 };
+  for(var k in S.results){ if(Object.prototype.hasOwnProperty.call(S.results,k) && t[S.results[k]] !== undefined) t[S.results[k]]++; }
+  return t;
+}
+function needsReview(){
+  return ORDER.filter(function(q){ var v = S.results[q.id]; return v === 'weak' || v === 'shaky'; });
+}
+
+/* ---------- question rendering ---------- */
+function stageLabel(){
+  if(S.mode === 'review') return 'مرحله ۳ · مرور نقطه‌های ضعیف';
+  return S.i < WARM ? 'مرحله ۱ · مرور سریع' : 'مرحله ۲ · سؤال‌های اصلی';
+}
+
+function paint(){
+  var q = S.list[S.i];
+  if(!q){ return S.mode === 'review' ? finalScreen() : reviewScreen(); }
+
+  var total = S.list.length;
+  $('q-pos').textContent = 'سؤال ' + fa(S.i + 1) + ' از ' + fa(total);
+  $('q-stage').textContent = stageLabel();
+  $('q-track').style.width = ((S.i) / total * 100) + '%';
+
+  $('q-topic').textContent = q.topic;
+  $('q-stem').innerHTML = q.stem;
+  $('q-body').innerHTML = q.body;
+  $('q-think').hidden = false;
+  $('q-after').innerHTML = '';
+
+  $('q-dock').innerHTML = '<button class="btn btn-1" id="q-reveal">نمایش پاسخ</button>';
+  on($('q-reveal'), reveal);
+  persist();
+}
+
+function reveal(){
+  var q = S.list[S.i];
+  $('q-think').hidden = true;
+  $('q-after').innerHTML =
+    '<div class="reveal">' +
+      '<div class="ans"><div class="ans-h"><i>✓</i><span>پاسخ تشریحی</span></div><div class="ans-b">' + q.answer + '</div></div>' +
+      '<div class="assess">' +
+        '<p class="assess-q">چقدر روی این سؤال مسلط بودی؟</p>' +
+        '<p class="assess-h">خودت مشخص می‌کنی — همین تعیین می‌کنه آخر چی رو دوباره مرور کنی.</p>' +
+        '<div class="opts">' +
+          '<button class="opt" data-v="strong"><i></i>کامل بلد بودم</button>' +
+          '<button class="opt" data-v="shaky"><i></i>با شک حل کردم</button>' +
+          '<button class="opt" data-v="weak"><i></i>بلد نبودم</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  $('q-dock').innerHTML = '<p class="meta center">یکی رو انتخاب کن تا بریم سؤال بعد</p>';
+
+  Array.prototype.forEach.call(document.querySelectorAll('.opt'), function(b){
+    on(b, function(){
+      b.classList.add('sel');
+      grade(b.getAttribute('data-v'));
+    });
+  });
+
+  var sc = $('q-scroll');
+  var box = $('q-after');
+  try { box.scrollIntoView({ behavior:'smooth', block:'start' }); }
+  catch(e){ sc.scrollTop = sc.scrollHeight; }
+}
+
+function grade(v){
+  var q = S.list[S.i];
+  S.results[q.id] = v;
+  persist();
+  $('q-dock').innerHTML = '<button class="btn btn-1" id="q-next">' +
+    (S.i + 1 < S.list.length ? 'سؤال بعدی <span class="arw">←</span>' :
+     (S.mode === 'review' ? 'جمع‌بندی نهایی' : 'دیدن نتیجه')) + '</button>';
+  on($('q-next'), function(){ S.i++; persist(); paint(); });
+}
+
+/* ---------- review ---------- */
+function reviewScreen(){
+  var t = tally(), list = needsReview();
+  $('rv-g').textContent = fa(t.strong);
+  $('rv-y').textContent = fa(t.shaky);
+  $('rv-r').textContent = fa(t.weak);
+
+  if(list.length){
+    $('rv-title').textContent = 'مرور آخر';
+    $('rv-text').textContent = fa(list.length) + ' نقطه هنوز ارزش مرور دوباره داره. فقط همین‌ها رو دوباره می‌بینی، نه کل آزمون رو.';
+    var h = '';
+    list.forEach(function(q){
+      h += '<div class="topic ' + (S.results[q.id] === 'weak' ? 'r' : 'y') + '"><i></i>' + q.topic +
+           '<em>' + (S.results[q.id] === 'weak' ? 'بلد نبودم' : 'با شک') + '</em></div>';
+    });
+    $('rv-list').innerHTML = h;
+    $('rv-go').textContent = 'مرور این ' + fa(list.length) + ' سؤال';
+    $('rv-go').hidden = false;
+    $('rv-skip').hidden = false;
+    on($('rv-go'), startReview);
+  } else {
+    $('rv-title').textContent = 'همه رو کامل بلد بودی';
+    $('rv-text').textContent = 'نقطه ضعیفی برای مرور باقی نمونده.';
+    $('rv-list').innerHTML = '';
+    $('rv-go').hidden = true;
+    $('rv-skip').textContent = 'دیدن جمع‌بندی';
+  }
+  go('s-review');
+  persist();
+}
+
+var reviewStarted = false;
+function startReview(){
+  var list = needsReview();
+  if(!list.length) return finalScreen();
+  S.list = list; S.i = 0; S.mode = 'review'; reviewStarted = true;
+  go('s-quiz'); paint();
+}
+
+/* ---------- final ---------- */
+function finalScreen(){
+  var t = tally();
+  var done = t.strong + t.shaky + t.weak;
+  var pct = done ? Math.round((t.strong * 100 + t.shaky * 55) / done) : 0;
+
+  $('fn-g').textContent = fa(t.strong);
+  $('fn-y').textContent = fa(t.shaky);
+  $('fn-r').textContent = fa(t.weak);
+
+  var t0 = Date.now();
+  (function tick(){
+    var p = Math.min((Date.now() - t0) / 1000, 1);
+    $('fn-num').textContent = fa(Math.round(pct * (1 - Math.pow(1 - p, 3)))) + '٪';
+    if(p < 1) requestAnimationFrame(tick);
+  })();
+  setTimeout(function(){ $('fn-ring').style.strokeDashoffset = String(408 - 408 * pct / 100); }, 90);
+
+  $('fn-title').textContent = 'تموم شد.';
+  $('fn-text').textContent = pct >= 85
+    ? 'مهم‌ترین مباحث رو پوشش دادی و جاهای لغزنده رو دیدی. خوب پیش رفتی.'
+    : pct >= 60
+    ? 'وضعیتت قابل قبوله و می‌دونی دقیقاً کجاها لنگ می‌زنی.'
+    : 'مهم‌ترین کار رو کردی: نقطه‌ضعف‌هات رو پیدا کردی. همین‌ها رو مرور کن.';
+
+  var byTopic = {};
+  ORDER.forEach(function(q){
+    var v = S.results[q.id];
+    if(v === 'weak' || v === 'shaky'){ byTopic[q.topic] = (byTopic[q.topic] || 0) + (v === 'weak' ? 2 : 1); }
+  });
+  var keys = Object.keys(byTopic).sort(function(a,b){ return byTopic[b] - byTopic[a]; }).slice(0, 3);
+  if(keys.length){
+    var h = '<div class="card" style="margin-top:16px"><h3 class="sub">قبل از امتحان این ' + fa(keys.length) + ' موضوع رو یک بار دیگه ببین</h3><div style="margin-top:12px">';
+    keys.forEach(function(k){ h += '<div class="topic r"><i></i>' + k + '</div>'; });
+    $('fn-focus').innerHTML = h + '</div></div>';
+  } else {
+    $('fn-focus').innerHTML = '<div class="card-flat" style="margin-top:16px"><p class="meta" style="color:var(--success)">موضوعی برای مرور دوباره باقی نمونده.</p></div>';
+  }
+
+  var tips = [
+    'روابط و عددهای اصلی رو یک‌بار روی کاغذ بنویس.',
+    'دیگه سراغ مبحث جدید نرو؛ فقط همین‌ها رو تثبیت کن.',
+    'سر جلسه، اول سؤال‌هایی رو بزن که مطمئنی.',
+    'خواب کافی از یک ساعت مرور اضافه مهم‌تره.'
+  ];
+  $('fn-tips').innerHTML = tips.map(function(x){ return '<div class="chk"><i>✓</i><span>' + x + '</span></div>'; }).join('');
+
+  var rest = needsReview();
+  var again = $('fn-again');
+  if(rest.length && !reviewStarted){
+    again.hidden = false;
+    again.textContent = 'مرور ' + fa(rest.length) + ' سؤال ضعیف';
+    on(again, startReview);
+  } else { again.hidden = true; }
+
+  go('s-final');
+  persist();
+}
+
+/* ---------- entry ---------- */
+function begin(fresh){
+  if(fresh){ S = { list: ORDER.slice(), i: 0, mode: 'main', results: {}, seen: 0 }; }
+  go('s-quiz'); paint();
+}
+
+on($('btn-start'), function(){ begin(true); });
+on($('fn-reset'), function(){
+  store.del(K_SESS);
+  reviewStarted = false;
+  S = { list: ORDER.slice(), i: 0, mode: 'main', results: {}, seen: 0 };
+  $('btn-resume').hidden = true;
+  go('s-home');
+});
+on($('rv-skip'), finalScreen);
+
+/* one-time creator credit */
+var veil = $('veil');
+if(!store.get(K_INTRO)) veil.classList.add('on');
+on($('veil-ok'), function(){ veil.classList.remove('on'); store.set(K_INTRO, '1'); });
+on(veil, function(e){ if(e.target === veil){ veil.classList.remove('on'); store.set(K_INTRO, '1'); } });
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape' && veil.classList.contains('on')){ veil.classList.remove('on'); store.set(K_INTRO, '1'); }
+});
+
+/* resume after an accidental refresh */
+(function(){
+  var raw = store.get(K_SESS);
+  if(!raw) return;
+  try {
+    var p = JSON.parse(raw);
+    if(!p || !p.list || !p.list.length) return;
+    var answered = Object.keys(p.results || {}).length;
+    if(!answered) return;
+    S = p;
+    var btn = $('btn-resume');
+    btn.hidden = false;
+    btn.textContent = 'ادامه از سؤال ' + fa(Math.min(S.i + 1, S.list.length));
+    on(btn, function(){
+      if(S.i >= S.list.length){ return S.mode === 'review' ? finalScreen() : reviewScreen(); }
+      go('s-quiz'); paint();
+    });
+  } catch(e){}
+})();
+
+/* never surface raw errors to a student */
+window.addEventListener('error', function(e){ e.preventDefault && e.preventDefault(); });
+})();
+</script>
+</body>
+</html>
